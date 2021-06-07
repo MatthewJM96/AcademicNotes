@@ -1,0 +1,644 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LaTeX book template                           %%
+%% Author:  Amber Jain (http://amberj.devio.us/) %%
+%% License: ISC license                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Source: http://en.wikibooks.org/wiki/LaTeX/Hyperlinks %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{color}
+
+\usepackage{mathtools}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\graphicspath{ {Images/} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter quote at the start of chapter        %
+% Source: http://tex.stackexchange.com/a/53380 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% First page of book which contains 'stuff' like: %
+%  - Book title, subtitle                         %
+%  - Book author name                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Book's title and subtitle
+\title{\Huge \textbf{Early Universe} \\ \Large 4th year course by Fedor Bezrukov.\thanks{\url{fedor.bezrukov@manchester.ac.uk}}}
+% Author
+\author{\textsc{Notes by Matthew Marshall}}
+
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auto-generated table of contents, list of figures and list of tables %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+%%%%%%%%%%%
+% Preface %
+%%%%%%%%%%%
+\chapter*{Preface}
+These notes are likely incomplete and inaccurate in places, feel free to email me\footnote{\url{matthew.marshall-3@student.manchester.ac.uk}} and I will endeavour to make corrections.
+
+\section*{The Course}
+The universe of FRW cosmology possesses a smooth background, and yet when we look closely at the night sky, we see galaxies and many slight perturbations in the CMB. In this course, we study these inhomogeneities seen throughout the universe, looking at how they came to be, grew and how they lead to the CMB spectra we see today. In the first half we look at how they grew and how they lead to the CMB, and in the second half we go back an look at how they began.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Give credit where credit is due. %
+% Say thanks!                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgements}
+These notes are entirely based upon Fedor Berukov's \textit{Early Universe} course at the University of Manchester, which is itself based around Valery Rubakov's \textit{Introduction to the Theory of the Early Universe} series of books - specifically \textit{Hot Big Bang Theory} and \textit{Cosmological Perturbations and Inflationary Theory}.
+
+%%%%%%%%%%%%%%%%
+% NEW CHAPTER! %
+%%%%%%%%%%%%%%%%
+\chapter{Current Cosmological Model}
+
+\begin{chapquote}{Richard P. Feynman}
+``Natures uses only the longest threads to weave her patterns, so each small piece of her fabric reveals the organization of the entire tapestry.''
+\end{chapquote}
+
+\section{FRW Metric}
+
+The generic homogeneous and isotropic metric is:
+\begin{equation}
+ds^2 = dt^2 - a^2(t)\Big[\frac{dr^2}{1 - \kappa r^2 / R^2} + r^2(d\theta^2 + sin(\theta)d\phi^2)\Big] \ ,
+\end{equation}
+where $\kappa$ represents the curvature of space ($\kappa = \{+1 \rightarrow closed; 0 \rightarrow flat; -1 \rightarrow open\}$). We will be using $\kappa = 0$ for most of this course as this agrees very well with our current measurements of the value.
+
+We will be working with conformal time, $\eta$, throughout this course, for which:
+\begin{equation}
+g_{\mu\nu} = a^2(\eta)\eta_{\mu\nu} \ , \ \ \ \eta_{\mu\nu} = diag(1 , -1, -1, -1) \ ,
+\end{equation} 
+with it being related to cosmic time, t, by:
+\begin{equation}
+t = \int a(\eta)d\eta \ .
+\end{equation}
+
+\section{Observational Factors}
+
+\subsection{$\boldsymbol\Lambda \text{CDM}$ Cosmology}
+
+The $\Lambda \text{CDM}$ (the ``standard model of cosmology'') is a parametrisation of the Big Bang model containing dark energy ($\Lambda$) and dark matter (CDM). This has the universe as expanding, having been a hot gas at early times and evolved to be uniform at large scales.
+
+\subsection{SDSS Map}
+
+The SDSS map is a survey of the universe which provides insight into how it varies with direction. The findings have shown that the universe is indeed isotropic.
+
+\subsection{Hubble's \textit{Constant}}
+
+Hubble's constant, $H(t)$, is written:
+\begin{equation}
+H(t) = \frac{\dot{a}(t)}{a(t)} \ ,
+\end{equation}
+where $a(t)$ is the scale factor of the universe as seen in the FRW metric. $H_0$ denotes the value at the current epoch of the universe.
+
+It is possible to infer Hubble's constant, as Hubble did, by exploiting known properties of bodies in the universe and data we can observe. For example, using redshift we can determine the velocities of bodies, and using angular size and apparent magnitude we can determine distances.
+
+\subsection{Redshift \& Expansion}
+
+We write:
+\begin{equation}
+1 + Z = \frac{\lambda_o}{\lambda_e} \simeq H \cdot t \simeq H_0 \cdot r \ ,
+\end{equation}
+where $\lambda_o$ and $\lambda_e$ are the observed and emitted wavelengths respectively, and $r$ is the distance of the source.
+
+In the above, we have made an assumption that the change in wavelength is small between emittance and observation - i.e. that sources are not far away from observers. For more distant objects, it is necessary to make more involved expansions of $H$ where we need to know how it changes in time.
+
+\subsection{CMB}
+
+The data obtained from recent surveys (in particular, Planck's) of the CMB have given us three major characteristics:
+\begin{itemize}
+\item $T \simeq 2.7K$: we see that the universe is VERY uniform;
+\item $T \simeq 3.4mK$: we see a polarisation resulting from Doppler shift of the CMB - i.e. we are flying through the CMB!
+\item $T \simeq 18\mu K$: we see perturbations of order $\frac{\delta T}{T} \sim 10^{-5}$, yielding the power spectra of the CMB.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{CMB_TT_Power_Spectrum}
+
+\caption{The TT power spectrum of the CMB.}
+\end{figure}
+
+\section{Review of FRW}
+
+We will now recap FRW, looking at the metric - where we introduce conformal time - then writing interesting equations and their solutions - using the concept of horizons - before finishing with the current composition of the universe.
+
+\subsection{Metric}
+
+We write the common FRW metric, which is homogeneous and isotropic (spherically symmetric):
+\begin{equation}
+ds^2 = g_{\mu\nu}dx^\mu dx^\nu = dt^2 - a^2(t)d\vec{x}^2 \ ,
+\end{equation}
+where $d\vec{x}^2$ is the element of distance. We usually the distance element as:
+\begin{equation}
+d\vec{x}^2 = \frac{dr^2}{1 - \kappa r^2} - r^2(d\theta^2 + \sin^2(\theta)d\phi^2) \ ,
+\end{equation}
+where $\kappa$ is a parameter encoding the curvature of spacetime:
+\begin{equation}
+\kappa = \begin{cases}
+\ +1& \text{closed} \\
+\ \ \ 0& \text{flat} \\
+\ -1& \text{open} \\
+\end{cases} \ .
+\end{equation}
+
+We note that $d\vec{x}$ is a conformal distance, with $a(t)d\vec{x}$ being the associated physical distance. Yet, as written, we directly use physical time. We seek a conformally expressed metric, and so rewrite eq. 1.6:
+\begin{equation}
+ds^2 = a^2(\eta)(d\eta^2 - d\vec{x}^2) \ ,
+\end{equation}
+where we have introduced a conformal time, $\eta$, which has the relation to physical time: $dt = a(\eta)d\eta$. In these conformal coordinates, we find the nice property that light travels in straight lines - making calculations much easier.
+
+\subsection{Hubble's Law}
+
+This conformal parametrisation makes deriving Hubble's law quite easy. For a short pulse, we can write:
+\begin{equation}
+\delta\eta_\text{src} = \delta\eta_0 \ \ \Rightarrow \ \ \frac{\delta t_\text{src}}{a_\text{src}} = \frac{\delta t_0}{a_0} \ ,
+\end{equation}
+using which we can get an expression for the redshift:
+\begin{equation}
+1 + Z \ \hat{=} \ \frac{\lambda_0}{\lambda_\text{src}} = \frac{a_\text{src}}{a_0} \ .
+\end{equation}
+
+To get to Hubble's law, we use an expansion of $H = \dot{a}/a$, which yields to first order:
+\begin{equation}
+a_\text{src} = a_0\Big(1 + H_0(t_0 - t_\text{src}) + O[(t_0 - t_\text{src})^2]\Big) \ .
+\end{equation}
+
+Thus we have Hubble's law:
+\begin{equation}
+1 + Z \simeq 1 + H_0(t_0 - t_\text{src}) = 1 + H_0d
+\end{equation}
+
+\subsection{Einstein Equation}
+
+Einstein gave us the equation of dynamics for gravity as the curvature of spacetime. From the Ricci tensor and scalar, $R_{\mu\nu}$ and $R = g^{\mu\nu}R_{\mu\nu}$, we get the Einstein equation:
+\begin{equation}
+R_{\mu\nu} - \frac{1}{2}g_{\mu\nu}R = 8\pi G(T_{\mu\nu} + g_{\mu\nu}\Lambda) \ ,
+\end{equation}
+where $\Lambda$ is the cosmological constant and $T_{\mu\nu}$ is the energy-momentum tensor.
+
+We note that this equation gives us a conserved current:
+\begin{equation}
+\Delta_\mu T^\mu_{\ \ \nu} = 0 \ ,
+\end{equation}
+where, for an ideal fluid, we can write:
+\begin{equation}
+T^\mu_{\ \ \nu} = (\rho + P)U^\mu U_\nu - \delta^\mu_\nu P \ , \ \ \ P = P(\rho) \ .
+\end{equation}
+In a comoving frame, this has the simple representation:
+\begin{equation}
+[T^\mu_{\ \ \nu}] = \begin{pmatrix}
+ \rho & 0 & 0 & 0 \\
+ 0 & P & 0 & 0 \\
+ 0 & 0 & P & 0 \\
+ 0 & 0 & 0 & P
+\end{pmatrix} \ .
+\end{equation}
+
+\subsection{Equations of Dynamics of Unvierse}
+
+\textit{Note that from here on out, we use $a'$ to indicate $\frac{da}{d\eta}$ and $\dot{a}$ to indicate $\frac{da}{dt}$.}\newline
+
+\noindent Taking the ${}^{00}$ component of the Einstein equation, we obtain the Friedmann equation:
+\begin{equation}
+\frac{a'(\eta)^2}{a(\eta)^4} = H^2 = \frac{8\pi G}{3}\rho - \frac{\kappa}{a^2} \ .
+\end{equation}
+
+Likewise, taking the ${}^{ij}$ component of the Einstein equation, we obtain the Raychaudhuri equation:
+\begin{equation}
+2\frac{a''(\eta)}{a(\eta)^3} + \frac{a'(\eta)^2}{a(\eta)^4} = -8\pi GP - \frac{\kappa}{a^2} \ .
+\end{equation}
+
+We also have the energy relation:
+\begin{equation}
+\rho' - 3\frac{a'(\eta)}{a(\eta)^2}(\rho + P) = 0 \ .
+\end{equation}
+
+Altogether, with the equation of state $P = P(\rho)$, we have four equations and three unknowns ($a, \rho, P$). This seems wrong! The solution is to realise that of the first three equations we stated (eq. 1.18 $\rightarrow$ 1.20), we can actually get a complete statement using just two of them, as any one of them can be derived from the other two.
+
+\subsection{Thermodynamics of the Early Universe}
+
+We need the equation of occupancy of fermions and bosons:
+\begin{equation}
+f(E) = \frac{1}{e^{E/T} \pm 1} \ ,
+\end{equation}
+where $+1$ corresponds to fermions and $-1$ to bosons.
+
+We can write expressions for the energy density, pressure and number density using these expressions:
+\begin{equation}
+n = g_i \int\frac{d^3\vec{p}}{(2\pi)^3}f(E) \ ;
+\end{equation}
+\begin{equation}
+\rho = g_i \int\frac{d^3\vec{p}}{(2\pi)^3}Ef(E) \ ;
+\end{equation}
+\begin{equation}
+P = g_i\frac{4\pi}{3} \int^\infty_m f(E)\big(E^2 - m^2)^\frac{3}{2}dE \ .
+\end{equation}
+Here, we have $g_i$ representing the number of degrees of the particle, and $E^2 = p^2 + m^2$.
+
+In the common regime that $m \ll \abs{\vec{p}}, T$, we obtain a set of values for bosons and fermions respectively:
+\begin{align}
+n &= \begin{cases}
+\ g_i\frac{\xi(3)}{\pi^2}T^3 \\
+\ g_i\frac{3}{4}\frac{\xi(3)}{\pi^2}T^3
+\end{cases} \propto T^3 \ ; \\ \nonumber\\
+\rho &= \begin{cases}
+\ g_i\frac{\pi^2}{30}T^4 \\
+\ g_i\frac{7}{8}\frac{\pi^2}{30}T^4
+\end{cases} \propto T^4 \ ; \\ \nonumber\\
+P &= \frac{\rho}{3} \propto T^4 ; \\ \nonumber\\
+S &= \begin{cases}
+\ g_i\frac{2\pi^2}{45}T^3 \\
+\ g_i\frac{7}{8}\frac{2\pi^2}{45}T^3
+\end{cases} \propto T^3 \ .
+\end{align}
+
+\subsection{Some Universe Models}
+
+\subsubsection{Radiation Dominated}
+
+The equation of state is:
+\begin{equation}
+P = \frac{\rho}{3} \ .
+\end{equation}
+
+By using the Friedmann and Raychaudhuri equations, we obtain:
+\begin{equation}
+\frac{a''}{a^3} + \frac{\kappa}{a^2} = 0 \ \ \Rightarrow \ \ a'' + \kappa a = 0 \ ,
+\end{equation}
+where $\kappa a$ is 0 in a flat universe, thus we get:
+\begin{equation}
+a = C\eta + D \propto t^{\frac{1}{2}} \ , \ \ \ C, D = \text{const} \ .
+\end{equation}
+We are able to drop $D$ by selecting appropriate boundary conditions.\newline
+
+We want an expression for physical time:
+\begin{equation}
+dt = ad\eta = C\eta d\eta \ \ \Rightarrow \ \ t = \frac{C}{2}\eta^2 \ .
+\end{equation}
+
+We can thus obtain an expression for Hubble's parameter, and so the age of the universe:
+\begin{equation}
+H = \frac{a'}{a^2} = \frac{C}{C^2\eta^2} = \frac{1}{2t} \ \ \Rightarrow \ \ t_{\text{universe}} = \frac{1}{2H} \ .
+\end{equation}
+
+Another way of looking at Hubble's parameter gives us:
+\begin{equation}
+H = \frac{1}{C\eta^2} = \frac{1}{a\eta} \ \ \Rightarrow \ \ a\eta H = 1 \ .
+\end{equation}
+This is an important result, as we shall see later.
+
+\subsubsection{Matter Dominated}
+
+We presume particles are sufficiently separated that we can write:
+\begin{equation}
+P = 0 \ \ \Rightarrow \ \ \rho \propto \frac{1}{a^3} \ .
+\end{equation}
+
+Beginning in the same way as last time; setting $\kappa = 0$ and using the 
+
+\chapter{Evolution of Perturbations in the Universe}
+
+\begin{chapquote}{Albert Einstein}
+``Only two things are infinite, the universe and human stupidity, and I'm not sure about the former.''
+\end{chapquote}
+
+\section{Jean's Instability}
+
+\subsection{Overview}
+
+Jean's instability is an instability of small perturbations in the bulk properties of the universe (pressure and density). We see that in an analysis of a simple (in fact, as found from this analysis, unphysical) universe the perturbations can grow exponentially.
+
+We make several assumptions to simplify the universe we are working in:
+\begin{itemize}
+\item Newtonian flat universe $\rightarrow \phi(\vec{x}, t)$;
+\item Static universe;
+\item Uniform background;
+\item Classical fluid $\rightarrow \rho(\vec{x}, t), P(\vec{x}, t), \vec{v}(\vec{x}, t)$. 
+\end{itemize}
+
+\subsection{Mathematical System}
+
+We now write the equations that describe the evolution of the system we have specified. We note that we have six variables (vectors count as three!) and so we expect six of these equations, as we shall have (note that we drop the arguments of our characteristic properties in these equations for conciseness):
+
+The first is the differential form of Newtonian gravity:
+\begin{equation}
+\Delta\phi = 4\pi G\rho \ .
+\end{equation}
+
+The second is the continuity equation for our fluid:
+\begin{equation}
+\partial_t\rho + \vec{\nabla} \cdot (\rho \vec{v}) = 0 \ .
+\end{equation}
+
+The third (fourth and fifth) is Newton's 1st law for infinitesimal volumes of fluid:
+\begin{equation}
+\rho\partial_t\vec{v} + (\rho\vec{v} \cdot \vec{\nabla})\vec{v} = -\vec{\nabla}P - \rho\vec{\nabla}\phi \ .
+\end{equation}
+
+The final equation is the equation of state:
+\begin{equation}
+P = P(\rho) \ .
+\end{equation}
+
+\subsection{Parameters \& Solving}
+
+We start with a uniform background with no perturbations:
+\begin{equation}
+\phi = 0 \ , \ \ \ \rho = \rho \ , \ \ \ P = P \ , \ \ \ \vec{v} = 0 \ ,
+\end{equation}
+and inject in \textit{small} perturbations:
+\begin{equation}
+\phi = \delta\phi \ , \ \ \ \rho = \rho + \delta\rho  \ , \ \ \ P = P + \delta P \ , \ \ \ \vec{v} = \delta\vec{v} \ ,
+\end{equation}
+
+Plugging these both into our equations and taking the difference we get, after truncating anything above first-order in the perturbations:
+
+\begin{equation}
+\Delta\delta\phi = 4\pi G\delta\rho \ ,
+\end{equation}
+\begin{equation}
+\partial_t \delta\rho + \rho\vec{\nabla} \cdot \delta\vec{v} = 0 \ ,
+\end{equation}
+\begin{equation}
+\rho\partial_t \delta\vec{v} = -\vec{\nabla}\delta P - \vec{\nabla}\delta\phi \ ,
+\end{equation}
+\begin{equation}
+\delta P \simeq \partial_\rho P \delta\rho \ \hat{=} \ u^2_s \delta\rho
+\end{equation}
+
+Taking the partial derivative with respect to time of eq. 2.8 and the divergence of eq. 2.9, making the appropriate substitutes we get a wave equation:
+\begin{equation}
+(\partial_t^2 - u^2_s\Delta - 4\pi G\rho)\delta\phi = 0 \ .
+\end{equation}
+
+We make an ansatz by transforming to the momentum-space representation:
+\begin{equation}
+\delta\rho(\vec{x}, t) = \int d^3\vec{q} e^{i\vec{q}\cdot\vec{x}}\delta\rho(\vec{q}, t) \ ,
+\end{equation}
+\begin{equation}
+\delta\rho(\vec{q}, t) = e^{i\omega t}\delta\rho_q \ .
+\end{equation}
+
+Inserting our ansatz, we get:
+\begin{equation}
+\omega = \sqrt{u^2_sq^2 - 4\pi G\rho} \ ,
+\end{equation}
+which looks reminiscent of the Klein-Gordon dispersion relation, but with a minus rather than a plus.
+
+This sign difference yields a very interesting result: we can have imaginary frequencies! If we define the Jean's momentum as:
+\begin{equation}
+q_J \ \hat{=} \ \sqrt{\frac{4\pi G\rho}{u_s^2}} \ ,
+\end{equation}
+we can ask what happens for $q < q_J$ - i.e. for these imaginary frequencies.
+
+In this regime, we define $\Omega \ \hat{=} \ -i\omega$ and write our solution as:
+\begin{equation}
+\delta\rho(\vec{x}, t) = e^{\pm\Omega t}\delta\rho_q \ .
+\end{equation}
+We see that we thus have found that in some regime it is possible for our small perturbations to grow exponentially!
+
+We define two more properties of this system, the Jean's length and Jean's time:
+\begin{equation}
+\lambda_J \ \hat{=} \ \sqrt{\frac{u^2_s\pi}{G\rho}} \ ,
+\end{equation}
+\begin{equation}
+t_J \ \hat{=} \ \frac{1}{\Omega} \simeq \frac{1}{\sqrt{4\pi G\rho}} \ .
+\end{equation}
+
+We see that for any perturbations of scale $\lambda > \lambda_J$, we find they grow exponentially. For critical perturbations (of scale $\lambda \simeq \lambda_J$), we find their typical time scale to be that of the Jean's time.
+
+Recalling that the FRW model gives an expanding universe $H = \sqrt{(8\pi / 3)G\rho} \sim t_J$ we see our claim at the beginning that the model, while a good invitation for further analysis, is itself a bad parallel of an analysis of our actual universe due to the assumptions made - specifically that we have ignored the expansion rate of the universe. To get a valid result, we will spend much of the course redoing this analysis in the general relativistic regime.
+
+\section{Perturbations in GR Model}
+
+In this section, we look to investigate perturbations in the GR model. We start by defining the small metric and energy-momentum tensor for the perturbations. Once we have done this, we investigate gauge transformations and list a few options for gauge fixing - with the most useful being the Newtonian-Conformal gauge. Finally, we look to obtain linearised equations for the system.
+
+\subsection{Small Metric}
+
+\textit{We note that we use $\eta_{\mu\nu} = \textnormal{diag}(+1, -1, -1, -1)$ throughout this section.}\newline
+
+If we look at the metric as we normally write it, we are able to separate it into a ``vacuum'' and a perturbed component:
+\begin{align}
+ds^2 = g_{\mu\nu}(x)dx^\mu dx^\nu &= \Big[g_{\mu\nu}^{(0)}(\eta) + \delta g_{\mu\nu}(x)\Big] dx^\mu dx^\nu \nonumber\\
+&= a(\eta)^2\Big[\eta_{\mu\nu} + h_{\mu\nu}(x)\Big]dx^\mu dx^\nu \ .
+\end{align}
+
+It will be useful to be able to go into momentum space:
+\begin{equation}
+h_{\mu\nu}(\eta, \vec{x}) = \int d^3\vec{k} e^{i\vec{k}\cdot\vec{x}}h_{\mu\nu}(\eta, \vec{k}) \ .
+\end{equation}
+Here, $\vec{k}$ is the conformal momentum. We also note that we're treating time and space differently due to the fact that we lose Lorentz invariance in an expanding universe.
+
+A useful thing to note is that when we move to or from momentum space, we find that:
+\begin{equation}
+\partial_{x_j} \longleftrightarrow ik_j \ .
+\end{equation}\newline
+
+For each value of $\vec{k}$, we can break the system into independent equations based on helicity - the representation under rotations around $\vec{k}$.
+\begin{equation}
+L = -i\partial_\alpha
+\end{equation}
+We obtain three sector: the scalars, the transverse vectors and the transverse-traceless tensors; $L = 0, 1, 2$ respectively.
+
+\begin{itemize}
+\item[$L = 0 \ \ \longrightarrow \ \ $] scalars, any vector $v_i \propto k_i$, $h_{ij} \propto \delta_{ij}, k_i k_j$ ;
+\item[$L = 1 \ \ \longrightarrow \ \ $] any vector $v_i$, for which $v_i k_i = 0$, i.e. that is perpendicular to $\vec{k}$.
+\item[$L = 2 \ \ \longrightarrow \ \ $] the object $h_{ij}^{TT}$ for which: \[h_{ij}^{TT} = 0 \ , \ \ \ h_{ij}^{TT}k_i = h_{ij}^{TT}k_j = 0 \ .\]
+\end{itemize}
+
+Using the above properties, we can easily write the form of the various components of $h_{\mu\nu}$:
+\begin{align}
+h_{00} &= \underbrace{2\Phi(\eta, \vec{k})}_{L \ = \ 0} \ ; \\
+h_{i0} = h_{0i} &= \underbrace{ik_iZ(\eta, \vec{k})}_{L \ = \ 0} + \underbrace{Z_i^T(\eta, \vec{k})}_{L \ = \ 1} \ ; \\
+h_{ij} &= -\underbrace{2\delta_{ij}\Psi}_{L \ = \ 0} - \underbrace{2k_i k_j E}_{L = 0} + \underbrace{i(k_i W_j^T + k_j W_i^T)}_{L \ = \ 1} + \underbrace{h_{ij}^{TT}}_{L \ = \ 2}
+\end{align}
+
+We can thus write the line element as:
+\begin{align}
+ds^2 = \ &a(\eta)^2[1 + 2\Phi]d\eta^2 + 2a(\eta)^2[\partial_{x_i}Z + Z_i^T]d\eta dx^i \nonumber\\
+&- a(\eta)^2[(1 + 2\Psi)\delta_{ij} - 2\partial_{x_i}\partial_{x_j}E - (\partial_{x_i}W_j^T + \partial_{x_j}W_i^T) - h_{ij}^{TT}]dx^idx^j
+\end{align}
+
+We note that the first expression has one degree of freedom (from the scalar), the second expression possessing three degrees of freedom (one from the scalar and two from the transverse vector), and the final expression possesses six degrees of freedom (one from each scalar, two from the transverse vector and two from the transverse-traceless tensor). Thus we have a total of ten degrees of freedom.
+
+We compare this to the number of degrees of freedom we expect for a symmetric $3 \times 3$ matrix - which $h_{ij}$ is - which is six. As a result, we have four degrees of freedom to kill via gauge fixing. Before performing this gauge fixing however, we will take a quick look at the energy-momentum tensor in the light of perturbations.
+
+\subsection{Energy-Momentum Tensor for an Ideal Fluid}
+
+We write the energy-momentum tensor much the same way as we did the metric:
+\begin{equation}
+T_{\mu\nu} = T_{\mu\nu}^{(0)} = \delta T_{\mu\nu} \ .
+\end{equation}
+For an ideal fluid, we write:
+\begin{equation}
+T^\mu_{ \ \ \nu} = (\rho + P)U^\mu U_\nu - \delta^\mu_\nu P \ ,
+\end{equation}
+where we encode perturbations in pressure and density:
+\begin{equation}
+\rho = \rho^{(0)} + \delta\rho \ , \ \ \ P = P^{(0)} + \delta P \ .
+\end{equation}
+
+In a co-moving frame the conformal velocity, $U^\mu$, is given by:
+\begin{equation}
+[V^\mu] = \begin{pmatrix}
+1 \\ 0 \\ 0 \\ 0
+\end{pmatrix}
+\end{equation}
+Thus, given the conformal velocity, $U_i$, is related to the physical velocity by:
+\begin{equation}
+U^\mu = \frac{1}{a}V^\mu 
+\end{equation}
+Thus, we can write the co-moving velocity with perturbations as:
+\begin{equation}
+U^0 = \frac{1}{a}(1 + \delta U^0) \ , \ \ \ U_i = \frac{1}{a}\delta U_i \ .
+\end{equation}
+
+We expect the velocity to satisfy:
+\begin{equation}
+U^\mu U_\mu = 1 = g_{\mu\nu}U^\mu U^\nu \ ,
+\end{equation}
+which we can check by using the RHS:
+\begin{align}
+U^\mu U_\mu = g_{00}U^0U^0 &= a(\eta)^2 (1 + 2\Phi)a(\eta)^{-2}(1 + \delta U^0)^2 + \mathcal{O}(\delta\vec{u}^2) \nonumber\\
+&= 1 + 2\delta U^0 + 2\Phi + ... \ .
+\end{align}
+Thus for small perturbations $U^\mu U_\mu \simeq 1$.
+
+\subsection{Gauge Transformations}
+
+The theory of general relativity is invariant under arbitrary coordinate changes:
+\begin{equation}
+x^\mu \longmapsto \tilde{x}^\mu(x) \ ,
+\end{equation}
+as long as the fields are all transformed appropriately for their tensor structure. The metric transforming as:
+\begin{equation}
+g_{\mu\nu}(x) \longmapsto \tilde{g}_{\mu\nu}(\tilde{x}) = \frac{\partial x^\lambda}{\partial \tilde{x}^\mu}\frac{\partial x^\rho}{\partial \tilde{x}^\nu}g_{\lambda\rho}(x) \ .
+\end{equation}
+
+We're interested in small perturbations, so we write:
+\begin{equation}^{(0)}
+x^\mu \longmapsto \tilde{x}^\mu(x) = x^\mu + \xi^\mu(x) \ ,
+\end{equation}
+where $\xi^\mu(x)$ are four small arbitrary functions.
+
+We apply this transformation to the metric:
+\begin{equation}
+g_{\mu\nu}(x) \longmapsto \tilde{g}_{\mu\nu}(\tilde{x}) \simeq g_{\mu\nu}(x) - \frac{\partial \xi^\lambda}{\partial x^\mu}g_{\lambda\nu}(x) - \frac{\partial\xi^\lambda}{\partial x^\nu}g_{\mu\lambda}(x) \ .
+\end{equation}
+
+Decomposing the metric and Taylor expanding $g^{(0)}_{\mu\nu}(\tilde{x})$ we can write:
+\begin{equation}
+g^{(0)}_{\mu\nu}(x) + \frac{\partial g^{(0)}_{\mu\nu}}{\partial x^\lambda} \xi^\lambda + \delta\tilde{g}_{\mu\nu}(\tilde{x}) = g^{(0)}_{\mu\nu}(x) + \delta g_{\mu\nu}(x) - \frac{\partial \xi^\rho}{\partial x^\mu}g^{(0)}_{\rho\nu}(x) - \frac{\partial\xi^\gamma}{\partial x^\nu}g^{(0)}_{\mu\gamma}(x) \ .
+\end{equation}
+
+\textit{From here, we use comma notation to indicate derivatives.}\newline
+
+We can thus write:
+\begin{equation}
+\delta\tilde{g}_{\mu\nu}(\tilde{x}) = \delta g_{\mu\nu}(x) - \xi^\rho_{,\mu}g_{\rho\nu}^{(0)} - \xi^\gamma_{,\nu}g_{\mu\gamma}^{(0)} - g^{(0)}_{\mu\nu,\delta}\xi^\delta \ .
+\end{equation}
+
+As we're looking interested in a flat spacetime, we write:
+\begin{equation}
+g^{(0)}_{00} = a(\eta)^2 \ , \ \ \ g^{(0)}_{ij} = -a(\eta)^2\delta_{ij}
+\end{equation}
+
+This gives us:
+\begin{align}
+\delta\tilde{g}_{00} &= \delta g_{00} - 2a(\eta)^2\xi^0_{,0} - 2\xi^0aa_{,0} \nonumber\\
+&= \delta g_{00} - 2a(a\xi^0)_{,0} \\
+\delta\tilde{g}_{0i} &= \delta g_{0i} + a(\eta)^2\Big[\xi^i_{,0} - \xi^0_{,i}\Big] \\
+\delta\tilde{g}_{ij} &= \delta g_{ij} + a(\eta)^2\Big[2\frac{a_{,0}}{a}\delta_{ij}\xi^0 + \xi^i_{,j} + \xi^j_{,i}\Big]
+\end{align}
+
+\subsection{Gauge Choices}
+
+\subsubsection{Conformal-Newtonian Gauge}
+
+In this gauge, we first choose three gauge functions:
+\begin{equation}
+\delta g_{0i} = 0 \ ,
+\end{equation}
+equivalently stated:
+\begin{equation}
+Z = 0 \ , \ \ \ Z_i^T = 0 \ .
+\end{equation}
+
+Equation 2.43 is satisfied most generally for:
+\begin{equation}
+\xi_i = \sigma_{,i}(\eta, \vec{x}) \ , \ \ \ \xi^0 = \sigma_{,0}(\eta, \vec{x}) \ ,
+\end{equation}
+for arbitrary $\sigma(\eta, \vec{x})$. We can choose this arbitrary function such that:
+\begin{equation}
+E = 0 \ .
+\end{equation}
+
+Setting these parameters to zero is called the conformal-Newtonian gauge. We thus have perturbations of the FRW metric in the form:
+\begin{equation}
+ds^2 = a(\eta)^2\Big[(1 + 2\Phi)d\eta^2 - (1 + 2\Psi)dx^idx^i + \big(W_{j,i}^T + W_{i,j}^T + h_{ij}^{TT}\big) dx^idx^j\Big] \ .
+\end{equation}
+
+\subsubsection{Other Gauges}
+
+The synchronous gauge is an alternative gauge choice in which we set: 
+\begin{equation}
+g_{0\mu} = 0 \ , \ \ \text{equivalently: } \ \ Z = 0 \ , \ \ Z_i^T = 0 \ , \ \ \Phi = 0 \ .
+\end{equation}
+In this gauge, arbitrary $\xi^0(x)$ is allowed, leaving a residual gauge freedom. We find in this gauge that proper time behaves itself:
+\begin{equation}
+dt = a(\eta)^2(1 + 2\Phi)d\eta \ ,
+\end{equation}
+as unless $\Phi = 0$, its scale will vary.
+
+Another option is the comoving gauge, for which:
+\begin{equation}
+\Phi = 0 \ , \ \ \ v = 0 \ ,
+\end{equation}
+where $v$ is the scalar velocity potential of the perturbations.
+
+A related concept to these gauge choices are gauge invariant variables. These variables coincide with the perturbations as written in the conformal-Newtonian gauge, but when written in a generic form go further by providing a convenient way to get from any other gauge back to the conformal-Newtonian gauge. \newline
+
+In this course we don't make use of these alternative gauges, and instead focus on the conformal-Newtonian gauge.
+
+\end{document}
