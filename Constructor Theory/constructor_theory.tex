@@ -1,0 +1,141 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LaTeX book template                           %%
+%% Author:  Amber Jain (http://amberj.devio.us/) %%
+%% License: ISC license                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Source: http://en.wikibooks.org/wiki/LaTeX/Hyperlinks %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+
+
+\usepackage{slashed}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{chngpage}
+
+\graphicspath{ {Images/} }
+
+\renewcommand{\arraystretch}{1.3}
+
+\usepackage{mathtools}
+
+\usepackage{bbm}
+\usepackage{urwchancal}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter quote at the start of chapter        %
+% Source: http://tex.stackexchange.com/a/53380 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% First page of book which contains 'stuff' like: %
+%  - Book title, subtitle                         %
+%  - Book author name                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Book's title and subtitle
+\title{\Huge \textbf{Constructor Theory} \\ \Large Notes on a Revolution.\thanks{credit to David Deutsch, Chiara Marletto, and colleagues}}
+% Author
+\author{\textsc{by Matthew Marshall}}
+
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auto-generated table of contents, list of figures and list of tables %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+%%%%%%%%%%%
+% Preface %
+%%%%%%%%%%%
+\chapter*{Preface}
+These notes are likely incomplete and inaccurate in places, feel free to email me\footnote{\url{matthew.marshall@stfc.ac.uk}} and I will endeavour to make corrections.
+
+\section*{The Why}
+Since physics developed out of natural philosophy, it has presumed a dogma that might be now called the Newtonian framing: identify a rule of how the state of a thing changes into another state, and figure out some fixing of that thing's state at some "time" - concisely: laws of motion and initial conditions. From these two things, with arbitrary precision and (until quantum theory) accuracy we can say how that thing has been throughout its being. Quantum mechanics introduced an uncertainty to this, but that uncertainty may well be a local property of where we are (a modal branch of the universe, or some hidden variables that we have yet to, or cannot determine), and even if not the basic way of thinking about systems in still largely the same.
+
+Aside from these laws of motion and initial conditions, we have had other kinds of laws which simply state certain things are impossible (e.g. conservations/symmetries, 2nd law of thermodynamics, etc.), which in turn give us limits on how efficiently certain processes can occur (e.g. heat exchange). This project seeks to reformulate physics (and perhaps the other sciences) in terms of statements of possible and impossible transformations - with possibility and impossibility used in a binary sense.
+
+To accommodate such a reformulation, constructor theory seeks to provide a framework in which 'subsidiary theories' (specific collections of the above statements of possibility) can be placed. In developing this framework, certain properties immediately fall out which are explored first. So far no subsidiary theories have been written down.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Give credit where credit is due. %
+% Say thanks!                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgements}
+These notes are entirely based upon the work of David Deutsch, Chiara Marletto and their collaborators, and are only intended to be a summary of such for purposes of my own understanding.
+
+%%%%%%%%%%%%%%%%
+% NEW CHAPTER! %
+%%%%%%%%%%%%%%%%
+\chapter{Principles and Corollaries of Constructor Theory}
+
+\begin{chapquote}{Richard P. Feynman}
+``Natures uses only the longest threads to weave her patterns, so each small piece of her fabric reveals the organization of the entire tapestry.''
+\end{chapquote}
+
+\section{Definitions}
+
+\begin{itemize}
+	\item[\textbf{Constructor Theory}] The framework of principles that regulate how subsidiary theories can be written.
+	\item[\textbf{Subsidiary Theory}] A collection of statements of what transformations are and are not possible, written in constructor-theoretic language.
+	\item[\textbf{Substrate}] A system that has state and can cause or react to transformations.
+	\item[\textbf{Constructor}] A substrate that facilitates a transformation on other substrates with no change to its own state.
+	\item[\textbf{Variable}] A set of disjoint attributes for which a substrate can be in a state with some distribution over these attributes. \textit{Note}: two substrates in combination may have variables (and so attributes) that are not present independently in the two substrates - such as distance between centre of masses.
+	\item[\textbf{Attribute}] A property of a substrate, capable of being modified by some transformation. An attribute can be defined as the set of states of a substrate that hold that attribute.
+	\item[\textbf{Substrate State}] A set of fixings of variables of the substrate in question.
+	\item[\textbf{Sharp Variable}] A variable of which a specific attribute is held in a substrate's state. That is to say, if that variable was measured on that substrate, the specific attribute would be evaluated.
+	\item[\textbf{Task}] A transformation that is described by a set of input attributes that map in an ordered fashion to a same-size set of output attributes. A task acts on any substrate with at least one attribute in its state that is indistinguishable from an attribute in the input attributes of the task, and changes that attribute to the corresponding output attribute.
+	\item[\textbf{Identity Task}] The task that makes no change to the state of a substrate on which it acts.
+\end{itemize}
+
+\section{Universal Principles}
+
+\begin{itemize}
+	\item[\textbf{Counter-factual Nature}] Subsidiary laws are expressed entirely as a collection of statements saying what transformations are and are not possible on system states.
+	\item[\textbf{Locality Principle}] A transformation acting on one substrate only affects state on that substrate. That is, for substrates $\textbf{\textsc{S}}_{1}$,  $\textbf{\textsc{S}}_{2}$, with an arbitrary task $\mathcal{A}$, and identity task $\mathcal{I}$:
+		\begin{equation}
+			\begin{split}
+				\forall \ \textsc{S}_{1} \in \textbf{\textsc{S}}_{1}, \ \textsc{S}_{2} \in \textbf{\textsc{S}}_{2} \\
+				\textit{state}(\textbf{\textsc{S}}_{1} \oplus \textbf{\textsc{S}}_{2}) = (\textsc{S}_{1}, \ \textsc{S}_{2}) \\
+				(\mathcal{A} \otimes \mathcal{I})(\textsc{S}_{1}, \textsc{S}_{2}) = (\mathcal{A}\textsc{S}_{1}, \ \textsc{S}_{2})
+			\end{split}
+		\end{equation}
+\end{itemize}
+
+\subsection{Concepts}
+
+
+\end{document}
