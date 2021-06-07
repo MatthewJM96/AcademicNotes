@@ -1,0 +1,1787 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LaTeX book template                           %%
+%% Author:  Amber Jain (http://amberj.devio.us/) %%
+%% License: ISC license                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Source: http://en.wikibooks.org/wiki/LaTeX/Hyperlinks %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+
+
+\usepackage{slashed}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{chngpage}
+
+\usepackage[compat=1.1.0]{tikz-feynman}
+
+\graphicspath{ {Images/} }
+
+\renewcommand{\arraystretch}{1.3}
+
+\usepackage{mathtools}
+
+\usepackage{bbm}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter quote at the start of chapter        %
+% Source: http://tex.stackexchange.com/a/53380 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% First page of book which contains 'stuff' like: %
+%  - Book title, subtitle                         %
+%  - Book author name                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Book's title and subtitle
+\title{\Huge \textbf{Constructor Theory} \\ \Large Notes on a Revolution.\thanks{David Deutsch, Chiara Marletto, and colleagues}}
+% Author
+\author{\textsc{by Matthew Marshall}}
+
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auto-generated table of contents, list of figures and list of tables %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+%%%%%%%%%%%
+% Preface %
+%%%%%%%%%%%
+\chapter*{Preface}
+These notes are likely incomplete and inaccurate in places, feel free to email me\footnote{\url{matthew.marshall@stfc.ac.uk}} and I will endeavour to make corrections.
+
+\section*{The Course}
+First there were symmetries of nature as noted by Plato, then came classical mechanics on the wings of Newton, Maxwell then bequeathed us classical field theory. Einstein took all of these and cooked up General Relativity, while Dirac and friends conspired to make things uncertain with quantum mechanics. T'Hooft was unhappy with quantum mechanics and so combined it with field theory to give us quantum field theory, but this was still insufficient and so Yang and Mills decided to introduce symmetries once more, giving us our gauge theories. We study this step - gauge theories - on the path to quantum gravity and ultimately a theory of everything!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Give credit where credit is due. %
+% Say thanks!                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgements}
+These notes are entirely based upon Apostolos Pilaftsis's \textit{Gauge Theories} course at the University of Manchester, which make use of a set of textbooks: Cheng and Li's \textit{Gauge Theory of Elementary Particle Physics}, Pokorski's \textit{Gauge Field Theories} and Peskin and Schroeders \textit{Quantum Field Theory}. A book that may be useful is Valery Rubakov's \textit{Classical Theory of Gauge Fields}.
+
+%%%%%%%%%%%%%%%%
+% NEW CHAPTER! %
+%%%%%%%%%%%%%%%%
+\chapter{Preliminaries}
+
+\begin{chapquote}{Richard P. Feynman}
+``Natures uses only the longest threads to weave her patterns, so each small piece of her fabric reveals the organization of the entire tapestry.''
+\end{chapquote}
+
+\section{Classical Mechanics}
+
+We recall our Lagrangian dynamics:
+\begin{equation}
+L(q_i, \dot{q}_i) \underset{p_i \ \hat{=} \ \partial_{q_i}L}{\longmapsto} H(q_i, p_i) = \dot{q}_i p_i - L(q_i, \dot{q}_i) \ ,
+\end{equation}
+where our Lagrangian has the associated equations of motion - derived from the Poisson brackets - of:
+\begin{align}
+\dot{q}_i = \{q_i, H\} =& \sum_{j = 1}^N \partial_{q_j}q_i \partial_{p_j}H - \partial_{p_j}q_i \partial_{q_j}H = \partial_{p_i}H \nonumber\\
+\dot{p}_i = \{p_i, H\} =& \sum_{j = 1}^N \partial_{q_j}p_i \partial_{p_j}H - \partial_{p_j}p_i \partial_{q_j}H = -\partial_{q_i}H \ .
+\end{align}
+
+We also have the Poisson relation of $q_i$ and $p_j$:
+\begin{equation}
+\{p_i, q_j\} = \delta_{ij} \ .
+\end{equation}
+
+\section{Quantum Mechanics}
+
+We apply canonical quantisation where we take degrees of freedom to operators:
+\begin{equation}
+q \mapsto \ \hat{q} \ , \ \ \ p \mapsto \ \hat{p} \ .
+\end{equation}
+
+Taking our classical Poisson relation we construct our quantum commutation relation:
+\begin{equation}
+\{q, p\} = 1 \mapsto [\hat{q}, \hat{p}] = i \ .
+\end{equation}
+
+\textit{Note that here and onwards we are working in natural units of $\hbar = c = 1$.}
+
+\section{Relativistic Quantum Mechanics}
+
+\begin{equation}
+x^\mu, p^\mu \mapsto \hat{x}^\mu, \hat{p}^\mu \ ;
+\end{equation}
+\begin{equation}
+[\hat{x}^\mu , \hat{p}^\nu] = -i\eta^{\mu\nu} \ , \ \ \ \eta^{\mu\nu} = diag(1, -1, -1, -1) \ ;
+\end{equation}
+\begin{equation}
+p^\mu = \frac{\partial L}{\partial \dot{x}^\mu} \ .
+\end{equation}
+
+\section{Quantum Field Theory}
+
+A quick recap of QFT:
+
+\begin{equation}
+\phi(x) \mapsto \hat{\phi}(x) \ , \ \ \ \pi(x) = \frac{\partial\mathcal{L}}{\partial\dot{\phi}(x)} \mapsto \hat{\pi}(x) \ .
+\end{equation}
+\textit{Note that from here we will be inconsistent with hats with almost certainty. It should be obvious that from here on out, dealing with quantised systems, the hats should be present.}
+
+\begin{equation}
+L[\phi] = \int d^3\vec{x} \mathcal{L}[\phi] \ , \ \ \ S[\phi] = \int d^4x \mathcal{L}[\phi] \ , \ \ \ dim(S) = 0 \ ,
+\end{equation}
+the dimension of $S$ coming from the fact that $\frac{S}{\hbar}$ is a phase - i.e. real number - and so $S$ must have the same dimensions as $\hbar$.
+
+We have same-time commutations relations which arise from requiring that our fields interact locally only - i.e. satisfy causality.
+
+\begin{align}
+[\hat{\phi}(t, \vec{x}), \hat{\pi}(t, \vec{y})] =& \ i\delta^{(3)}(\vec{x} - \vec{y}) \ , \nonumber\\
+[\hat{\phi}(t, \vec{x}), \hat{\phi}(t, \vec{y})] = 0 \ , \ [\hat{\pi}&(t, \vec{x}), \hat{\pi}(t, \vec{y})] = 0 \ .
+\end{align}
+
+We note that quantum mechanics actually looks like a (1 + 0)-dimensional quantum field theory - though in reality they aren't precisely the same.
+
+\section{Free Scalar}
+
+\section{Electromagnetic Field}
+
+\section{Dirac Fermion Field}
+
+\subsection{Dirac and Weyl Spinors}
+
+\section{Quantum Electrodynamics}
+
+\subsection{Feynman Rules}
+
+\section{Noether's Theorem}
+
+{\color{red}DO THIS!}
+
+\chapter{Symmetries in Field Theory}
+
+\section{Brief Example}
+
+We first look at a simple Lagrangian and write  down the symmetries it possesses, after we have done this we will move on to look at specific details of the $SO(2)$ and $SU(2)$ symmetry groups.
+
+Our Lagrangian is:
+\begin{equation}
+\mathcal{L}[\phi] = \partial_\mu\phi^*\partial^\mu\phi - m^2\phi^*\phi - \lambda(\phi^*\phi)^2 \ ,
+\end{equation}
+it possesses two distinct symmetries:
+\begin{center}
+$\boldsymbol{U(1)}$\textbf{:} $\phi \mapsto \phi' = e^{i\theta}\phi \ , \ \ \ \theta \in \mathbb{R}$
+\end{center}
+\begin{center}
+\textbf{Poincar\'{e}:} 3 rotations, 4 translations and 3 boosts.
+\end{center}
+
+
+The Lorentz group, $SO(1, 3)$ is a subset of the Poincar\'{e} group including just the rotations and boosts.
+
+\section{\texorpdfstring{$\boldsymbol{SO(2)}$}{SO(2)}}
+
+We define $SO(2)$ by:
+\begin{equation}
+SO(2) = \{O \in GL(2, \mathbb{R}) \ | \ O^T = O^{-1} \wedge \abs{O} = 1\} \ ,
+\end{equation}
+where $GL(2, \mathbb{R})$ refers to the general linear group of 2x2 matrices with real entries. We find that a valid representation of $O$ is:
+\begin{equation}
+O = \begin{pmatrix}
+\cos(\theta) & \sin(\theta) \\
+-\sin(\theta) & \cos(\theta)
+\end{pmatrix} \ .
+\end{equation}
+
+We find that theories which possess $SO(2)$ symmetries involve doublets of the kind:
+\begin{equation}
+\Phi = \begin{pmatrix}
+\phi_1 \\
+\phi_2
+\end{pmatrix} \ , \ \ \phi_i \in \mathbb{R} \ ,
+\end{equation}
+where we can write the Lagrangian as:
+\begin{equation}
+\mathcal{L} = \frac{1}{2}(\partial_\mu\phi_i)^2 - \frac{1}{2}m^2\phi_i^2 - \frac{\lambda}{4}\phi_i^2\phi_j^2 \ , \ \ i, j = \{1, 2\} \ .
+\end{equation}
+
+We are able to write $O$ in exponential form by finding a matrix that we call the \textit{generator} of the $SO(2)$ group:
+\begin{equation}
+O = e^{i\theta\sigma_2} \ ,
+\end{equation}
+where $\sigma_i$ are the Pauli matrices.
+\newline
+\newline
+\textit{As a side note, it can be seen that for $U(1)$ we can choose the generator to be any real number, the most convenient choice being $1$.}
+
+\section{\texorpdfstring{$\boldsymbol{SU(2)}$}{SU(2)}}
+
+We define $SU(2)$ by:
+\begin{equation}
+SU(2) = \{U \in GL(2, \mathbb{C}) \ | \ U^\dagger = U^{-1} \wedge \abs{U} = 1\} \ ,
+\end{equation}
+where we find a valid representation that looks like:
+\begin{equation}
+U = \begin{pmatrix}
+e^{i\alpha}\cos(\theta) & e^{i\beta}\sin(\theta) \\
+-e^{-i\beta}\sin(\theta) & e^{-i\alpha}\cos(\theta)
+\end{pmatrix} \ .
+\end{equation}
+
+We once more find that theories possessing $SU(2)$ symmetries involve doublets, but this time of the complex kind:
+\begin{equation}
+\Phi = \begin{pmatrix}
+\phi_1 \\
+\phi_2
+\end{pmatrix} \ , \ \ \phi_i \in \mathbb{C} \ ,
+\end{equation}
+where we can write the Lagrangian as:
+\begin{equation}
+\mathcal{L} = (\partial_\mu\phi^*_i)(\partial^\mu\phi_i) - m^2\phi^*_i\phi_i - \lambda\phi^*_i\phi_i\phi^*_j\phi_j \ , \ \ i, j = \{1, 2\} \ .
+\end{equation}
+
+We again may write the transformation matrix in exponential form, here, given we have three angles in the matrix representation of $SU(2)$ we expect to have three corresponding generators:
+\begin{equation}
+U = e^{i\theta^aT^a} \ , \ \ a = \{1, 2, 3\} \ ,
+\end{equation}
+where we write the group parameters and generators as:
+\begin{align}
+\theta^a =& \ (\theta^1, \theta^2, \theta^3) \in \mathbb{R} \nonumber\\
+T^a =& \ \frac{1}{2}(\sigma_1, \sigma_2,\sigma_3)
+\end{align}
+
+\chapter{Group Theory}
+
+\section{Definition of Groups}
+
+For a group $G$, we can describe it by the set of elements $\{a, b, c, ...\} \in G$ and a multiplication operator. Such a group has the following properties, or axioms, that define its behaviour:
+\begin{align}
+\textbf{Closure:} \ \ &c = a \times b \in G \ \forall \ a, b \in G \nonumber\\
+\textbf{Associativity:} \ \ &a \times (b \times c) = (a \times b) \times c \ \forall \ a, b, c \in G \nonumber\\
+\textbf{Identity:} \ \ &\exists \ e \in G : e \times a = a \times e = a \ \forall \ a \in G \nonumber\\
+\textbf{Inverse:} \ \ &\exists \ a^{-1} \in g : a \times a^{-1} = a^{-1} \times a = e \ \forall \ a \in G \ .
+\end{align}
+
+We call a group $G$ Abelian if we can write:
+\begin{equation}
+a \times b = b \times a \ \forall \ a, b \in G \ .
+\end{equation}
+
+We can show using proof by contradiction that the identity element, $e \in G$, and the inverse element, $a^{-1} \in G$, of $a \in G$ are both unique.
+
+\subsection{Proof the Inverse Element is Unique}
+
+We assume:
+\begin{equation*}
+a \in G \ : \ \exists \ a_1^{-1}, \ a_2^{-1} \in G \ ; \ \ \ a_1^{-1} \neq a_2^{-1} \ .
+\end{equation*}
+
+By considering the identity, we can write:
+\begin{align}
+a_1^{-1} \times e = \ &a_1^{-1} \times (a \times a_1^{-1}) = a_1^{-1} \times (a \times a_2^{-1}) \nonumber\\
+\textit{By associativity:} \ \ \ \ &(a_1^{-1} \times a) \times a_1^{-1} = (a_1^{-1} \times a) \times a_2^{-1} \nonumber\\
+\textit{By inverse:} \ \ \ \ &e \times a_1^{-1} = e \times a_2^{-1} \nonumber\\
+\textit{By identity:} \ \ \ \ &a_1^{-1} = a_2^{-1} \nonumber
+\end{align}
+
+Thus, we have contradicted our beginning assumption. We therefore find that it is not possible for one element of $G$ for there to exist two non-identical inverses.
+
+\section{Examples of Groups}
+
+A really simple group is the group of real numbers with the addition operator, $(\mathbb{R}, +)$. However we find that the real numbers with the multiplication operator, $(\mathbb{R}, \cdot)$, is not a valid group as there is no inverse for the element $0$.
+
+We are able to construct so-called fields, which are groups imbued with a second operator. There are four infinite fields we can write:
+\begin{itemize}
+\item[] $(\mathbb{R}, +, \cdot) \ \rightarrow \ $ the real numbers;
+\item[] $(\mathbb{C}, +, \cdot) \ \rightarrow \ $ the complex numbers;
+\item[] $(\mathbb{Q}, +, \cdot) \ \rightarrow \ $ the rational numbers;
+\item[] $(\mathbb{H}, +, \cdot) \ \rightarrow \ $ the quaternions.
+\end{itemize}
+The quaternions were introduced by Hamilton, and are non-Abelian.
+
+\subsection{Discrete Groups}
+
+We introduce three discrete groups: $S_n$, $Z_n$, $C_n$. These are the groups of permutations of n objects, the integers modulo n, and cyclic group order n, respectively.
+
+\begin{center}
+\begin{tabular}{|| c | c | c | c ||}
+\hline
+Group & Multiplication & Order & Remarks \\
+\hline
+$S_n$ & Successive Operation & $n!$ & Non-Abelian in general \\
+\hline
+$Z_n$ & Addition modulo n & $n$ & Abelian \\
+\hline
+$C_n$ & Unspecified & $n$ & $C_n \cong Z_n$ \\
+\hline
+\end{tabular}
+\end{center}
+
+For $C_n$ we can write:
+\begin{equation}
+C_n \ \hat{=} \ \{ e, a, a^2, ..., a^{n - 1} \} \ , \ \ \ a^n = e \ .
+\end{equation}
+
+Some specific examples here are $Z_2$ (integers modulo 2) and $C_3$ (cyclic group order 3):
+\begin{align}
+Z_2 &= \{ 0, 1 \} \ , \ \ \ \ \ \ \ e = 0 \ ; \nonumber \\
+C_3 &= \{ e, a, a^2 \} \ , \ \ \ a^3 = e \ , \ \ \ a = e^{\frac{2\pi i}{3}} \ .
+\end{align}
+
+\subsection{Continuous Groups}
+
+There exist a number of useful continuous groups, however we will discuss them in detail later. For now we introduce the continuous group of all $n \times n$ real matrices $M$, with $det(M) \neq 0$. These form the so-called General Linear group: $GL(n, \mathbb{R})$ with the operator being multiplication of matrices.
+
+\section{Cosets}
+
+\subsection{Coset Definition}
+
+We define $H$ to be a proper subgroup of a group $G$:
+\begin{equation}
+\{ H = \{ h_1, ..., h_r \} \ ; \ \ H \subset G \ \wedge \ H \neq I = \{ e \} \ \wedge \ H \neq G \} \ .
+\end{equation}
+
+An example of proper subgroups can be easily seen by looking at the group:
+\begin{equation}
+C_6 = \{ e, a, ..., a^5 \} \ , \ \ \ a = e^{\frac{2\pi i}{6}} \ , \ \ \ a^6 = e \ .
+\end{equation}
+For this group, we can write the two proper subgroups $C_2$ and $C_3$ as:
+\begin{align}
+C_2 = \{ e, a^3 \} \ , \ \ \ C_3 = \{ e, a^2, a^4 \} \ .
+\end{align}
+
+For $g \in G$ we can construct the left and right cosets of $H$:
+\begin{align}
+\textbf{Left Coset:} \ \ gH &= \{ g \times h_1, g \times h_2, ..., g \times h_r \} \ ; \\
+\textbf{Right Coset:} \ \ Hg &= \{ h_1 \times g, h_2 \times g, ..., h_r \times g \} \ .
+\end{align}
+We note here that these are very precisely sets and not groups; we cannot guarantee that the rules of groups are preserved.
+
+\subsection{Lagrange's Theorem}
+
+Lagrange's theorem states that for any two left cosets $g_1 H$ and $g_2 H$, the following statement holds:
+\begin{equation}
+( g_1 H = g_2 H ) \ \vee \ ( g_1 H \ \cap \ g_2 H = \emptyset ) \ .
+\end{equation}
+
+\subsubsection{Proof of Lagrange's Theorem}
+
+We prove Lagrange's theorem by starting with the assumption that is logically the inverse of the theorem:
+\begin{equation}
+( g_1 H \neq g_2 H ) \ \wedge \ ( g_1 H \ \cap \ g_2 H \neq \emptyset ) \ .
+\end{equation}
+
+Thus, our assumption gives us that:
+\begin{align}
+&g_1 \neq g_2 \ , \ \ \text{and that} \nonumber\\
+\exists \ g_3 \in g_1 H \ \cap \ g_2 H &\ : \ g_3 = g_1 \times h_1 = g_2 \times h_2 \ ; \ h_1, h_2 \in H \ .
+\end{align}
+
+Using the second of the two statements above, we can write:
+\begin{equation}
+g_2 = g_1 \times h_1 \times h_2^{-1} = g_1 \times h_3 \ , \ h_3 \in H \ \ \Rightarrow \ \ g_2 \in g_1 H \ ,
+\end{equation}
+thus, we can write:
+\begin{equation}
+g_2 H = \{ g_1 \times h_3 \times h_l \ \forall \ h_l \in H\} = \{ g_1 \times h_m \ \forall \ h_m \in H \} = g_1 H \ .
+\end{equation}
+
+We have the contradiction that $g_2 H = g_1 H$, thus showing that Lagrange's theorem holds!
+
+\subsection{Coset Decomposition}
+
+If $H$ is a proper subgroup of $G$, then we are able to decompose $G$ in terms of $H$ and left cosets of $H$, this following from the fact we were able to prove Lagrange's theorem.
+
+The decomposition can be written:
+\begin{equation}
+G = H \ \cup \ g_1 H \ \cup \ g_2 H \ ... \ \cup \ g_{\nu - 1} H \ ; \ \ \ g_1, g_2, ..., g_{\nu - 1} \in G \ ,
+\end{equation}
+where we have that:
+\begin{equation}
+g_1 \in H \ ; \ g_2 \notin H \ ; \ g_2 \in g_1 H \ ; \ \text{etc.} 
+\end{equation}
+
+We call $\nu$ the index of $H$ in $G$.
+
+We define the coset space as , rather obviously, the set of $H$ and all cosets we can generate from it:
+\begin{equation}
+G/H = \{ H, g_1 H, ..., g_{\nu - 1} H \}
+\end{equation}
+
+As an example of coset spaces, we can think about $C_6$ again:
+\begin{equation}
+C_6 / C_2 = \{ C_2, \ aC_2, \ a^2C_2 \} \ , \ \ \ C_6 / C_3 = \{ C_3, \ aC_3 \} \ .
+\end{equation}
+
+\section{Morphisms between Groups}
+
+We now look at the morphisms that exist between two groups, $(A, \cdot)$ and $(B, \times)$, which map elements of one to elements of the latter.
+
+\subsection{Homomorphism}
+
+A homomorphism is defined as a functional mapping of many points to one (and not necessarily all) - otherwise said, it is a \textbf{non-injective}, \textbf{non-surjective} mapping. For a mapping:
+\begin{equation}
+f: A \mapsto B \ ,
+\end{equation}
+we can write:
+\begin{equation}
+b = f(a) \in B \ \ \forall \ \ a \in A \ .
+\end{equation}
+
+Equivalently, we may write:
+\begin{equation}
+f(a_1 \cdot a_2) = f(a_1) \times f(a_2) \ .
+\end{equation}
+
+We note that:
+\begin{equation}
+f(A) \subset B \ \Rightarrow \ f(A) \neq B \ \text{in general} \ .
+\end{equation}
+
+For two such groups that we can define this mapping for, we call the two groups \textbf{homomorphic}.
+
+\subsection{Isomorphism}
+An isomorphism is defined as a functional mapping of one point one point (for all points) - otherwise said it is an \textbf{injective}, \textbf{surjective} mapping; or a \textbf{bijective} mapping. We write the mapping:
+\begin{equation}
+f: A \leftrightarrow B \ ,
+\end{equation}
+and we have the same composition law:
+\begin{equation}
+f(a_1 \cdot a_2) = f(a_1) \times f(a_2) \ .
+\end{equation}
+
+For two groups where we can define such a bijective mapping, we call the two groups \textbf{isomorphic}: $A \cong B$.\newline
+
+Some examples of isomorphisms are: $C_n \cong Z_n \ , \ \ S_2 \cong C_2 \cong Z_2$.
+
+\subsection{Endomorphisms and Automorphisms}
+
+We define these two morphisms in the following manner:\newline
+
+\noindent\textbf{Endomorphism}: A group homomorphism of a group $A$ onto itself.
+\begin{equation}
+A \longmapsto A
+\end{equation}
+\textbf{Automorphism}: A group isomorphism of a group $A$ onto itself.
+\begin{equation}
+A \longleftrightarrow A
+\end{equation}
+
+\section{Continuous Groups}
+
+\subsection{Listing}
+
+Before we write a table of some interesting continuous groups and their properties, we first give a brief glossary of letters that describe the continuous groups we are interested in:
+\begin{itemize}
+\item[] \textbf{G}: \textit{General} - $det(M) \neq 0$ ;
+\item[] \textbf{L}: \textit{Linear} ;
+\item[] \textbf{S}: \textit{Special} - $det(M) = 1$ ;
+\item[] \textbf{O}: \textit{Orthogonal} ;
+\item[] \textbf{U}: \textit{Unitary} ;
+\item[] \textbf{E}: \textit{Exceptional} - relevant to GUTs and string theories.
+\end{itemize}
+
+Below is a table of some interesting continuous groups. Where a group is a subset of another group, they inherit any properties listed.
+\begin{adjustwidth}{-1.45in}{-.5in}
+\begin{center}
+\begin{tabular}{|| c | c | c | c ||}
+\hline
+\textbf{Group} & \textbf{Properties} & \textbf{Dimension} & \textbf{Remarks} \\
+\hline
+$GL(n, \mathbb{C})$ & $det(M) \neq 0$ & $2n^2$ & $n \times n$ linear complex matrices \\
+\hline
+$SL(n, \mathbb{C}) \subset GL(n, \mathbb{C})$ & $det(M) = 1$ & $2n^2 - 2$ & $n \times n$ linear complex matrices \\
+\hline
+$O(n, \mathbb{R}) \subset GL(n, \mathbb{C})$ & $\sum_{i = 1}^n (x^i)^2 = \sum_{i = 1}^n (x'^{i})^2$ & $\frac{1}{2}n(n - 1)$ & $O^T = O^{-1}$ \\
+\hline
+$SO(n, \mathbb{R}) \subset \big( O(n, \mathbb{R}) \ \cap \ SL(n, \mathbb{C}) \big)$ & as $O(n, \mathbb{R})$ and $SL(n, \mathbb{C})$ & $\frac{1}{2}n(n-1)$ & as $O(n, \mathbb{R})$ and $SL(n, \mathbb{C})$ \\
+\hline
+$U(n) \subset GL(n, \mathbb{C})$ & $\sum_{i = 1}^n \abs{x^i}^2 = \sum_{i = 1}^n \abs{x'^{i}}^2$ & $n^2 - 1$ & $U^\dagger = U^{-1}$ \\
+\hline
+$SU(n) \subset \big( U(n) \ \cap \ SL(n, \mathbb{C}) \big)$ & as $U(n)$ and $SL(n, \mathbb{C})$ & $n^2 - 1$ & as $U(n)$ and $SL(n, \mathbb{C})$ \\
+\hline
+$SO(N, M)$ & $\sum_{i,j = 1}^{n + m} x^i\eta_{ij}x^j = \sum_{i,j = 1}^{n + m} x'^i\eta_{ij}x'^j$ & {\color{red}?} & $\Lambda^T\eta\Lambda = \eta \ , \ det(\Lambda) = 1$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{adjustwidth}
+
+\subsection{Counting Dimensionality}
+
+We define the dimension of a group to be the number of independent real parameters an element of the group possesses.The dimension of a group is equal to the number of generators, and also the number of parameters possessed by the group.\newline
+
+As an example, we now look at the $O(n, \mathbb{R}) \subset GL(n, \mathbb{R})$ group, which we can immediately see has $N^2$ total parameters (it is a group of $n \times n$ matrices with real entries).\newline
+
+By looking at the constraints we must place on the group, we will find that not all $N^2$ real parameters are actually independent.
+
+Firstly, we state our constraints generally:
+\begin{equation}
+O^TO = \mathbf{1}_n \ \Rightarrow \ O^T_{ab}O_{bc} = \delta_{ac} = O_{ba}O_{bc} \ \forall \ a, b = 1, 2, ..., n \ ,
+\end{equation}
+
+In order to singly count the constraints imposed by the above condition, we require that $c \geq a$. We are thus ready to perform this counting, doing so by summing the number of values $c$ may take over all values of $a$:
+\begin{equation}
+R = \sum^n_{a = 1} n + 1 - a = \sum^n_{a = 1} a = \frac{1}{2}n(n + 1) \ .
+\end{equation}
+
+Thus, subtracting the restrictions from the number of real parameters the group elements each possess, we get the dimensionality:
+\begin{equation}
+\text{dim}(O(n, \mathbb{R})) = n^2 - R = \frac{1}{2}n(n - 1) \ .
+\end{equation}
+
+\subsection{Representations}
+
+Representations of a group, $G$, are homomorphisms from the group to the space of linear maps acting on a representation space. That is, a representation is a group of $n \times n$ matrices that act on some vector space whose vectors are of size $n$. We note that the dimension of the representation is the same as that of the group it represents. \newline
+
+Representations are useful as they allow us to describe how different states transform under the action of a particular symmetry. For example, doublet and triplet states will transform differently under an $SU(2)$ action.
+
+\begin{minipage}{\textwidth}
+\subsubsection{\texorpdfstring{$\boldsymbol{SU(n)}$}{SU(n)}}
+
+\textit{We here denote the homomorphic mapping from the group $G$ to a representation as $\rho(g) \ \forall \ g \in G$. We also denote the generators of the representation $T^a$.}\newline
+
+There are three useful representations to think about for $SU(n)$. If the representation is made up of $m \times m$ matrices, then these three representations are:
+\begin{itemize}
+\item[] \textbf{Trivial Rep.:} $m = 0 \ , \ \rho(g) = 0 \ \Rightarrow \ T^a = 0$, it is the representation that acts on scalars (such that the scalars do not transform under $SU(n)$);
+\item[] \textbf{Fundamental Rep.:} $m = n \ , \ \rho(g) = g$, thus the representation's matrices are those of the group itself, and this representation acts on vectors of size $n$;
+\item[] \textbf{Adjoint Rep.:} $m = \text{dim}(SU(n)) = n^2 - 1$, e.g. for $SU(2)$ we find that the adjoint representation consists of $3 \times 3$ matrices, and so acts on triplet states.
+\end{itemize}
+\end{minipage}\newline\newline
+
+{\color{red}Do we want an example here? E.g. weak decay and $SU(2)$. If so, figure out why parity gives that left-handed field projection should be put into a doublet but that we can still put right-handed field projection into a singlet state.}
+
+\subsection{Some Useful Matrix Relations in \texorpdfstring{$\boldsymbol{GL(n, \mathbb{C})}$}{GL(n, C)}}
+
+The first are some exponential expressions:
+\begin{align}
+e^M &= \sum^\infty_{i = 0} \frac{M^i}{i!} \ , \\
+ln(M) &= \sum^\infty_{i = 1} (-1)^{i + 1}\frac{(M - \mathbf{1}_n)^i}{i} \nonumber\\
+&= \int^1_0 du(M - \mathbf{1}_n)\Big[u(M - \mathbf{1}_n ) + \mathbf{1}_n\Big]^{-1}
+\end{align}
+
+If $[M_1, \ M_2] = 0$ and $M_1, M_2 \in GL(n, \mathbb{C})$ then we can write:
+\begin{align}
+e^{M_1}e^{M_2} &= e^{M_1 + M_2} \ , \\
+\ln(M_1) + \ln(M_2) &= \ln(M_1 M_2) \ .
+\end{align}
+
+A final useful identity is that:
+\begin{equation}
+\ln(\det(M)) = \text{Tr}(\ln(M)) \ .
+\end{equation}
+This being easily proved if we can write $\hat{M} = S^{-1}MS$ where $\hat{M}$ is diagonal:
+\begin{equation}
+\hat{M} = \begin{pmatrix}
+m_1 & 0 \\
+0 & m_2
+\end{pmatrix} \ .
+\end{equation}
+
+We can thus write:
+\begin{equation}
+\ln(\det(\hat{M})) = \ln(m_1 m_2) = \ln(m_1) + \ln(m_2) = \text{Tr}(\ln(\hat{M})) \ ,
+\end{equation}
+where:
+\begin{equation}
+\ln(\hat{M}) = \begin{pmatrix}
+\ln(m_1) & 0 \\
+0 & \ln(m_2)
+\end{pmatrix}
+\end{equation}
+
+\subsection{\texorpdfstring{$\boldsymbol{SO(2)}$}{SO(2)}}
+
+This group describes rotations in two dimensions through some angle $\phi$. For example, it could be a rotation about the axis $\vec{e}_z$ through $\phi$.
+
+We write the matrices as:
+\begin{equation}
+O(\phi) = \begin{pmatrix}
+\cos(\phi) & \sin(\phi) \\
+-\sin(\phi)& \cos(\phi)
+\end{pmatrix}
+\end{equation}
+
+Where we act on doublets:
+\begin{equation}
+\begin{pmatrix}
+x' \\
+y'
+\end{pmatrix} = \begin{pmatrix}
+\cos(\phi) & \sin(\phi) \\
+-\sin(\phi)& \cos(\phi)
+\end{pmatrix} \begin{pmatrix}
+x \\
+y
+\end{pmatrix}
+\end{equation}
+
+A basic property of $SO(2)$ is that such a rotation by $\phi$ and its inverse by the same $\phi$ causes no change:
+\begin{equation}
+O^T(\phi)\mathbf{1}_2O(\phi) = \mathbf{1}_2 \ \Leftrightarrow \ x'^2 + y'^2 = x^2 + y^2 \ .
+\end{equation}
+
+We further note that $SO(2)$ is Abelian:
+\begin{equation}
+O(\phi)O(\phi ') = O(\phi + \phi ') = O(\phi ')O(\phi) \ .
+\end{equation}
+
+We want to find the generators of the group, which we can do by making a Taylor expansion of $O(\phi)$ about $\phi = 0$:
+\begin{align}
+O(\phi) &= O(0) +\delta\phi O'(0) + \mathcal{O}(\delta\phi^2) \ , \ \ O'(0) \ \hat{=} \ \frac{dO}{d\phi}(0)\\
+&= \mathbf{1}_2 + \delta\phi\begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix} + \mathcal{O}(\delta\phi^2) \nonumber\\
+&= \mathbf{1}_2 - i\delta\phi\sigma_2 + \mathcal{O}(\delta\phi^2) \ .
+\end{align}
+
+{\color{red}I don't quite see this.}
+If we think of $\delta\phi = \phi/N \vert_{N \rightarrow \infty}$, we can write $O(\phi)$ as:
+\begin{equation}
+O(\phi) = \lim_{N \rightarrow \infty} \Big[O\Big(\frac{\phi}{N}\Big)\Big]^N = e^{-i\phi\sigma_2} \in SO(2) \ .
+\end{equation}
+We thus see that $\sigma_2$ is the generator of $SO(2)$, and $0 \leq \phi < 2\pi$ is the group parameter.
+
+\subsection{\texorpdfstring{$\boldsymbol{U(1)}$}{U(1)}}
+
+This group is the unit circle group in the complex plane, the members of which act as rotations on the complex plane. Of all $U(n)$, only the group with $n = 1$ is Abelian. Since all $U(n)$ groups possess complex determinants of norm 1, we have a homomorphism via the determinant function:
+\begin{equation}
+\det : U(n) \longmapsto U(1) \ .
+\end{equation}
+
+$SO(2)$ in $(V, \mathbb{R})$ is reducible in $(V, \mathbb{C})$ by means of a similarity transformation:
+\begin{equation}
+M^{-1}O(\phi)M = \hat{O}(\phi) = \begin{pmatrix}
+e^{i\phi} & 0 \\
+0 & e^{-i\phi}
+\end{pmatrix} = D^{(1)} \oplus D^{(-1)}(\phi) \ ,
+\end{equation} 
+with:
+\begin{equation}
+M = \frac{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\
+-i & i
+\end{pmatrix} \ , \ \ M^{-1} = \begin{pmatrix}
+1 & i \\
+1 & -i
+\end{pmatrix} \ .
+\end{equation}
+
+We say that
+\begin{equation}
+D^{(\pm)}(\phi) = e^{\pm i \phi}
+\end{equation}
+are faithful irreducible representations (\textbf{irreps}) of $U(1)$.\newline
+
+In $(V, \mathbb{C})$, we have: $SO(2) \cong U(1) \oplus \bar{U}(1)$, where $\bar{ \ }$ indicates complex conjugation.
+
+We write the general irreps of $U(1)$ as:
+\begin{equation}
+D^{(m)}(\phi) = e^{-im\phi} \ , \ m \in \mathbb{Z} \ , \ 0 \leq \phi < 2\pi \ .
+\end{equation}
+
+The generators for these irreps are just the integers:
+\begin{equation}
+G^{(m)} \ \hat{=} \ i\frac{d}{d\phi}D^{(m)}(\phi)\vert_{\phi = 0} = m \in \mathbb{Z} \ .
+\end{equation}
+
+\subsection{\texorpdfstring{$\boldsymbol{SO(3)}$}{SO(3)}}
+
+This group describes rotations in three dimensions through some angle, $\phi$, about some unit vector, $\vec{n}$.\newline
+
+We say the proper (passive, counter-clockwise) rotations are precisely about the basis vectors ($\vec{e}_x, \vec{e}_y, \vec{e}_z$):\newline
+
+$\boldsymbol{\vec{n} = \vec{e}_x}$:
+\begin{equation}
+R_1(\phi) = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & \cos(\phi) & -\sin(\phi) \\
+0 & \sin(\phi) & \cos(\phi)
+\end{pmatrix}
+\end{equation}
+
+$\boldsymbol{\vec{n} = \vec{e}_y}$:
+\begin{equation}
+R_2(\phi) = \begin{pmatrix}
+\cos(\phi) & 0 & \sin(\phi) \\
+0 & 1 & 0 \\
+-\sin(\phi) & 0 & \cos(\phi)
+\end{pmatrix}
+\end{equation}
+
+$\boldsymbol{\vec{n} = \vec{e}_z}$:
+\begin{equation}
+R_3(\phi) = \begin{pmatrix}
+\cos(\phi) & -\sin(\phi) & 0 \\
+\sin(\phi) & \cos(\phi) & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+\end{equation}
+
+The above equations are obtained by applying the right-hand rule, which explains why the second matrix appears to have $\sin(\phi)$ and $-\sin(\phi)$ the wrong way round.
+
+Once more we can obtain the generators of the group by performing the the calculation:
+\begin{equation}
+X_i = i\frac{d}{d\phi}R_i(\phi)\vert_{\phi = 0} \ , \ \ i = 1, 2, 3 \ .
+\end{equation}
+
+We thus obtain:
+\begin{equation}
+X_1 = \begin{pmatrix}
+0 & 0 & 0 \\
+0 & 0 & -i \\
+0 & i & 0
+\end{pmatrix} \ , \ \ X_2 = \begin{pmatrix}
+0 & 0 & i \\
+0 & 0 & 0 \\
+-i & 0 & 0
+\end{pmatrix} \ , \ \ X_3 = \begin{pmatrix}
+0 & -i & 0 \\
+i & 0 & 0 \\
+0 & 0 & 0
+\end{pmatrix} \ ,
+\end{equation}
+which can algebraically be written as:
+\begin{equation}
+(X_k)_{ij} = -\epsilon_{ijk} \ \rightarrow \ \text{Levi-Civita!} \ .
+\end{equation}
+
+\subsection{\texorpdfstring{$\boldsymbol{SU(2)}$}{SU(2)}}
+
+This group represents passive rotations of 2-dimensional complex vectors through $\theta$ about $\vec{n}$.
+
+We can write the transformation of an $SU(2)$ action as:
+\begin{equation}
+SU(2) : \vec{v} \longmapsto \vec{v}' = U(\theta, \vec{n})\vec{v} \ , \ \ \ \vec{v}'^* \cdot \vec{v}' = \vec{v}^* \cdot \vec{v} \ ,
+\end{equation}
+with:
+\begin{align}
+\det(U) &= 1 \ , \\
+U(\theta, \vec{n}) &= e^{-i\theta\vec{n} \cdot \vec{\sigma}/2} \nonumber\\
+&= \mathbf{1}_2\cos(\theta/2) - i\vec{n}\cdot\vec{\sigma}\sin(\theta/2) \ , \ \ 0 \leq \theta < 4\pi \ .
+\end{align}
+
+We find the generators of the group in the usual way:
+\begin{equation}
+T_a = i\frac{d}{d\theta}U(\theta, \vec{e}_a)\vert_{\theta = 0} = \frac{\sigma_a}{2} \ ,
+\end{equation}
+giving us the explicit forms:
+\begin{equation}
+T_1 = \frac{1}{2}\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix} \ , \ \ \ T_2 = \frac{1}{2}\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix} \ , \ \ \ T_3 = \frac{1}{2}\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}
+\end{equation}
+
+\begin{minipage}{\textwidth}
+\subsubsection{Properties of the Pauli Matrices}
+
+We've encountered the Pauli matrices a few times now, and we can expect to continue to do so, especially as the groups we have looked at so far are going to be the ones we focus on the most in this course. Given this, it only makes sense to write down a few useful properties of these matrices that make working with them easier: \newline
+
+\textbf{The Properties:}
+\begin{itemize}
+\item[(i)] $\text{Tr}(\sigma_i) = 0$ ;
+\item[(ii)] $\sigma_i = \sigma_i^\dagger$ ;
+\item[(iii)] $\sigma_i^2 = \mathbf{1}_2 \ , \ \ \sigma_i\sigma_j\vert_{i \neq j} = i\epsilon_{ijk}\sigma_k$ ;
+\item[(iv)] $\big[\sigma_i, \sigma_j\big] = 2i\epsilon_{ijk}\sigma_k$ .
+\end{itemize}
+\end{minipage}
+
+\subsection{\texorpdfstring{$\boldsymbol{SO(3)}$}{SO(3)} and \texorpdfstring{$\boldsymbol{SU(2)}$}{SU(2)}}
+
+It is interesting to look at the $SO(3)$ and $SU(2)$ groups in the light of the other, as we will find they are related in some way. The first thing we note is that the two groups have the same number of generators - they have the same dimension. We can specify the two groups by:
+\begin{align}
+SO(3) &= \Big\{R(\phi, \vec{n}) = e^{-i\phi\vec{n}\cdot\vec{X}} \ \vert \ 0 \leq \phi < 2\pi \Big\} \ , \\
+SU(2) &= \Big\{U(\theta, \vec{n}) = e^{-i\theta\vec{n}\cdot\vec{\sigma}/2} \ \vert \ 0 \leq \theta < 4\pi \Big\} \ .
+\end{align}
+
+It is quite interesting that the generators of both groups satisfy the same commutation relation:
+\begin{equation}
+[T_a, T_b] = i\epsilon_{abc}T_c \ .
+\end{equation}
+
+There's a rather obvious property of ordinary rotations, that after a $2\pi$ rotation we get back to the start. This property is therefore present in $SO(3)$:
+\begin{equation}
+R(\phi, \vec{n}) = R(\phi + 2\pi, \vec{n}) \ ,
+\end{equation}
+whereas we don't get quite the same property in $SU(2)$. In $SU(2)$ we find that after a $2\pi$ rotation we go to minus the original value and only after a $4\pi$ rotation do we get back to the start:
+\begin{equation}
+U(\theta, \vec{n}) = -U(\theta + 2\pi, \vec{n}) = U(\theta + 4\pi, \vec{n}) \ .
+\end{equation}
+
+We can thus write a faithful isometry:
+\begin{equation}
+SO(3) \cong SU(2)/Z_2 = \big\{U(\theta, \vec{n}) \cdot Z_2 \ \vert \ 0 \leq \theta < 2\pi \big\} \ ,
+\end{equation}
+since $Z_2 = \{\mathbf{1}_2, -\mathbf{1}_2\}$ is a proper subgroup of $SU(2)$.\newline
+
+We can compare what we have done here to a conceptually easier example: that of $y = x^2 \ , \ y \in [0, +\infty) \ , \ x \in (-\infty, +\infty)$. It is easy to see that there is no easy $1:1$ mapping of $y \leftrightarrow x$ for all values of $x$. Instead, we can only write a $1:1$ mapping for:
+\begin{equation}
+(-\infty, +\infty)/\{1, -1\} = [0, +\infty) \cdot \{1, -1\} \cong [0, +\infty) \cong (-\infty, 0] \ .
+\end{equation}
+
+\section{Lie Algebras and Lie Groups}
+
+\subsection{Definitions}
+
+A Lie algebra, $L$, is defined by a set of $\text{dim}(G)$ generators, $T_a$, of a (continuous) Lie group, $G$, closed under the commutation:
+\begin{equation}
+[T_a, T_b] = T_a \cdot T_b - T_b \cdot T_a = if^c_{ab}T_c \ ,
+\end{equation}
+where $f^c_{ab}$ are the structure constants of the Lie algebra.\newline
+
+The generators, $T_a$, must also satisfy the Jacobi identity:
+\begin{equation}
+\big[T_a, [T_b, T_c]\big] + \big[T_c, [T_a, T_b]\big] + \big[T_b, [T_c, T_a]\big] = 0 \ .
+\end{equation}
+
+The complete set of $T_a$ define the basis of a vector space, $(V, \mathbb{C})$, of dimension $\text{dim}(G)$.
+
+\subsection{Representations}
+
+The representation of a group depends on the representation of its generators, which need to satisfy the associated Lie algebra in any valid representation.\newline
+
+As we saw earlier, in the fundamental representation $T_a$ are represented by $\text{dim}(F) \times \text{dim}(F)$ matrices. Where $\text{dim}(F)$ is equal to the number of dimensions needed to generate the Lie algebra and the associated continuous group. For example, $SU(2) : \text{dim}(F) = 2$, $SO(3) : \text{dim}(F) = 3$. We denote this representation by $F$.\newline
+
+It's interesting here to consider $SO(3)$ and $SU(2)$ once more: that the generators of the two groups satisfy the same Lie algebra means that a valid representation of $SU(2)$ is one for which the generators are those of $SO(3)$. This is called the adjoint representation of $SU(2)$, as we shall see later.\newline
+
+The Lie algebra commutator, $[T_c, \cdot \ ]$, is a linear operator:
+\begin{equation}
+[T_a, \lambda_1 T_b + \lambda_2 T_c] = \lambda_1 [T_a, T_b] + \lambda_2 [T_a, T_c] \ \ \ \ \forall \ T_a, T_b, T_c \in L \ .
+\end{equation}
+
+This linear homomorphic mapping from $L\mapsto L$ over $\mathbb{C}$ can be represented by the structure constants:
+\begin{equation}
+\hat{O}_a T_b \ \hat{=} \ [T_a, T_b] = if^c_{ab}T_c \ , \ \ \ \hat{O}_a \ = [T_a, \cdot \ ] \ ,
+\end{equation}
+which gives us:
+\begin{equation}
+[\hat{O}_a] = \Big(D_\mathcal{A} (T_a)\Big)^c_b = i f^c_{ab} \ .
+\end{equation}
+This representation of $T_a$, $D_\mathcal{A}(T_a)$ is called the adjoint representation of the Lie algebra, we denote it by $\mathcal{A}$.\newline
+
+For the adjoint representation to satisfy the same Lie algebra as the fundamental representation, it must possess the same properties - the commutation relation and Jacobi identity.
+
+\subsection{Clifford Algebra}
+
+We introduce the Clifford Algebra, which is the anticommutation relation:
+\begin{equation}
+\{\theta_i, \theta_j\} = \theta_i\theta_j + \theta_j\theta_i = 0 \ , \ \ \ \theta \in \text{Grasman numbers} \ .
+\end{equation}
+For extra dimensional spaces, e.g. 3-dimensional and Minkowski:
+\begin{equation}
+\{\theta_i, \theta_j\} = 2\delta_{ij} \ , \ \ \ \{\theta_\mu, \theta_\nu\} = 2\eta_{\mu\nu} \ \Rightarrow \ \theta_\mu = \gamma_\mu ,
+\end{equation}
+where $\gamma_\mu$ are the gamma matrices:
+\begin{equation}
+\gamma_\mu = \begin{pmatrix}
+0 & \sigma_\mu \\
+\tilde{\sigma}_\mu & 0
+\end{pmatrix} \ , \ \ \ \sigma_\mu = (\mathbf{1}_2, \vec{\sigma}) \ , \ \ \ \sigma_\mu = (\mathbf{1}_2, -\vec{\sigma}) \ .
+\end{equation}
+
+\subsection{Killing Product and Cartan Metric}
+
+We define the symbols:
+\begin{equation}
+T^R_a, T^R_b \in GL(d_R, \mathbb{C}) \ , \ \ R = F,\mathcal{A} \ ,
+\end{equation}
+where $R$ denotes the representation chosen.\newline
+
+We note that, for $SU(N = 2)$:
+\begin{center}
+\begin{tabular}{|| c | c | c ||}
+\hline
+& $F$ & $\mathcal{A}$ \\
+\hline
+dim & $N = 2$ & $\text{dim}(SU(2)) = N^2 - 1 = 3$ \\
+\hline
+$T_a$ & $\frac{1}{2}\vec{\sigma}$ & $\vec{X}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The generators $T^\mathcal{A}_a \ \hat{=} \ D_\mathcal{A}(T_a)$ define a metric vector space - a.k.a. a manifold - with the metric of the space being defined by the Killing product:
+\begin{equation}
+(T_a, T_b) \ \hat{=} \ \text{Tr}(T^R_a, T^R_b) = \Delta^R_{ab} \ ,
+\end{equation}
+where we call $\Delta^R_{ab}$ the Killing product.
+
+The metric of the manifold, called the Cartan metric, is defined as:
+\begin{equation}
+g_{ab} \ \hat{=} \ \Delta^\mathcal{A}_{ab} = \text{Tr}(T^\mathcal{A}_aT^\mathcal{A}_b) = -f^x_{ay}f^y_{bx} \propto \delta_{ab} \ .
+\end{equation}
+
+\textit{As an aside, this Cartan metric is not $\propto \delta_{ab}$ for non-compact groups (e.g. the Lorentz groups).}
+
+The indices of $f_{abc}$ are all antisymmetric with one another, thus we can write:
+\begin{equation}
+f_{abc} = f^x_{ab}g_{xc} = f_{cab} = ...
+\end{equation}
+
+We note that we can rewrite the above as:
+\begin{equation}
+f_{abc} = -i\text{Tr}\Big(\underbrace{[T_a, T_b]}_{= \ f^x_{ab}T^\mathcal{A}_x}T_c\Big)_\mathcal{A} = f^x_{ab}\underbrace{\text{Tr}(T_xT_c)_\mathcal{A}}_{= \ g_{xc}}
+\end{equation}
+
+\subsection{Some Notes}
+
+These are some miscellaneous notes which are important:
+\begin{itemize}
+\item If all the structure constants, $f^b_{ac}$, are real, then the the Lie algebra, L, is a real algebra;
+\item if $g_ab$ is positive-definite, then the Lie algebra corresponds to a compact group. In this case, the metric can be diagonalised and rescaled to be a unit matrix: \[g_{ab} \mapsto \hat{g}_{ab} \propto \mathbf{1}_{ab} = \delta_{ab} \ ; \]
+\item there exists no adjoint representation of Abelian groups (e.g. $U(1)$ and $SO(2)$) as their commutation relation is always zero, and therefore so are the structure constants.
+\end{itemize}
+
+\subsection{Normalisation of Generators}
+
+For the groups $SO(N)$ and $SU(N)$, we can normalise their generators by writing:
+\begin{equation}
+\text{Tr}(T_aT_b)_R = T^R\delta_{ab} \ ,
+\end{equation}
+where:
+\begin{equation}
+T_F = \frac{1}{2} \ , \ \ \ T_\mathcal{A} = N \ .
+\end{equation}
+
+\subsection{Casimir Operators}
+
+The Casimir operators, $\mathbf{T}^2_R$ of a Lie algebra, L, in a representation, R, are themselves matrix representations that commute with all of the generators $T^R_a$ of L in R:
+\begin{equation}
+[\mathbf{T}_R^2, T^R_a] = 0 \ .
+\end{equation}
+
+We can explicitly construct the Casimir operators by writing:
+\begin{align}
+(\mathbf{T}^2_R)_{ij} &= T_\mathcal{A}\sum^{d_G}_{a,b = 1}\sum^{d_R}_{k = 1}\underbrace{\Big[D_R(T_a)\Big]_{ik}}_{\hat{=} \ (T^R_a)_{ik}}g^{ab}\underbrace{\Big[D_R(T_b)\Big]_{kj}}_{\hat{=} \ (T^R_b)_{kj}} \nonumber\\
+&= (T^R_aT^R_a)_{ij} = \delta_{ij}C_R \ \Rightarrow \ \mathbf{T}^2_R = T^R_aT^R_a = \mathbf{1}_{d_R}C_R \ .
+\end{align}
+Here, we have used the definitions:
+\begin{equation}
+d_G \ \hat{=} \ \text{dim}(G) \ , \ \ d_R \ \hat{=} \ \text{dim}(R) \ .
+\end{equation}
+
+We are able to write:
+\begin{align}
+\text{Tr}(\mathbf{T}_R^2) = \text{Tr}(T_a^RT_a^R) &= T_Rd_G \ , \ \text{also:} \\
+&=C_R\text{Tr}(\mathbf{1}_{d_R}) = C_Rd_R \ , \\ 
+\Rightarrow \ T_Rd_G &= C_Rd_R \ .
+\end{align}
+
+Using the last relation we obtained, we are able to derive that, for $SU(N)$ theories:
+\begin{equation}
+C_F = \frac{N^2 - 1}{2N} \ , \ \ C_\mathcal{A} = N \ .
+\end{equation}
+
+\chapter{Yang-Mills Theories}
+
+We now want to look at some actual physical theories. Specifically, Yang-Mills theories, which are theories based on non-Abelian compact groups such as $SU(N)$ and $SO(N), \ N > 2$. For these compact groups, we recall that for the Cartan metric we can write:
+\begin{equation}
+g_{ab} \mapsto \hat{g}_{ab} = \delta_{ab} \ , \ \ T_a \equiv T^a \ , \ \ f_{abc} \equiv f^{abc} \ .
+\end{equation}
+
+So that we can refer to it for illustration, we will first write the gauge transformation in QED, which is a theory invariant under transformations of the group $U(1)$:
+\begin{equation}
+A_\mu \mapsto A'_\mu = A_\mu - \frac{1}{e}\partial_\mu\theta = UA_\mu U^* + \frac{1}{ie}U\partial_\mu U^* \ , \ \ U = e^{i\theta} \in U(1) \ .
+\end{equation}
+It will also be worth keeping in mind the QED Lagrangian for force carriers (photons, not jedi):
+\begin{equation}
+\mathcal{L}_{\gamma} = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} \ .
+\end{equation}
+
+\section{The Yang-Mills Lagrangian}
+
+\subsection{\texorpdfstring{$\boldsymbol{SU(N)}$}{SU(N)} Transformations}
+
+The Yang-Mills Lagrangian which we are going to now seek is a general version of $\mathcal{L}_\gamma$ for any $SU(N)$ groups.
+
+We start by writing the gauge transformation for these groups as we did for QED above:
+\begin{equation}
+\vec{A}_\mu \ \hat{=} \ A^a_\mu T^a \mapsto \vec{A'}_\mu = U\vec{A}_\mu U^\dagger + \frac{1}{ig}U\partial_\mu U^\dagger \ , \ \ U = e^{i\theta^a T^a} \in SU(N) \ ,
+\end{equation}
+where we write $\theta^a \ \hat{=} \ \theta n^a$. Looking at this, we see that there are $N^2 - 1$ gauge fields from the internal indices. This transformation let's us quickly write the simplification for global $SU(N)$ transformations:
+\begin{equation}
+\vec{A}_\mu \mapsto \vec{A'}_\mu = UA_\mu U^\dagger \ .
+\end{equation}
+We can write:
+\begin{equation}
+\vec{A}_\mu = A^a_\mu (T^a)^{ \ \ j}_i \ . 
+\end{equation}
+This makes it immediately obvious that, under global $SU(N)$ transformations, the YM field multiplets $\vec{A}_\mu = A^a_\mu T^a$ transforms as a rank-$\begin{psmallmatrix}
+1 \\ 1
+\end{psmallmatrix}$ $SU(N)$ tensor.
+
+\subsection{Field Strength Tensor}
+
+Now we want to get an expression for the field strength tensor that transforms in a good way under $SU(N)$. For non-Abelian theories, we write the field strength tensor as:
+\begin{equation}
+\vec{F}_{\mu\nu} \ \hat{=} \ F^a_{\mu\nu}T^a \ .
+\end{equation}
+We want this tensor to satisfy a particular transformation that makes it exactly analogous to the $U(1)$ field strength tensor, which transforms as:
+\begin{equation}
+F_{\mu\nu} \mapsto F'_{\mu\nu} = UF_{\mu\nu}U^* = F_{\mu\nu} \ .
+\end{equation}
+The transformation that we would thus like to obtain is that:
+\begin{equation}
+\vec{F}_{\mu\nu} = F^a_{\mu\nu}T^a \mapsto \vec{F'}_{\mu\nu} = U\vec{F}_{\mu\nu}U^\dagger \ .
+\end{equation}
+Otherwise stated, we expect $F_{\mu\nu}$ to transform under the adjoint action of $SU(N)$.
+
+The expression we write as our ansatz is:
+\begin{equation}
+\vec{F}_{\mu\nu} = \partial_\mu \vec{A}_\nu - \partial_\nu \vec{A}_\mu + ig\Big[\vec{A}_\mu , \ \vec{A}_\nu\Big] \ .
+\end{equation}
+The $i$ is written explicitly as we want the tensor to be explicitly Hermitian, we also note that we want it to be traceless. We are able to rewrite this:
+\begin{equation}
+\vec{F}_{\mu\nu} = (\partial_\mu A^a_\nu)T^a - (\partial_\nu A^a_\mu)T^a + ig\underbrace{\Big[A^b_\mu T^b , \ A^c_\nu T^c\Big]}_{= \ iA_\mu^b A_\nu^c f^{bca}T^a} \ .
+\end{equation}
+
+We can finally rewrite this, using the complete antisymmetry of $f^{abc}$:
+\begin{equation}
+\vec{F}_{\mu\nu} = T^a\underbrace{\Big[\partial_\mu A^a_\nu - \partial_\nu A^a_\mu - gf^{abc}A_\mu^b A_\nu^c\Big]}_{\hat{=} \ F^a_{\mu\nu}} \ .
+\end{equation}
+
+We are now ready to show that as we have written it, the field strength tensor gives us precisely the transformation we want under $SU(N)$. We show this proof in Appendix 1.
+
+\subsection{\texorpdfstring{$\boldsymbol{\mathcal{L}_{\text{YM}}}$}{Yang-Mills Lagrangian}}
+
+We are now ready to write the Yang-Mills Lagrangian. Recalling the form of the photon Lagrangian, we can expect that the Yang-Mills Lagrangian involves $\vec{F}_{\mu\nu}\vec{F}^{\mu\nu}$.
+
+Recalling that we're now dealing with non-Abelian theories, we consider two general properties of matrices:
+\begin{equation}
+AB \neq BA \ , \ \ \text{Tr}(AB) = \text{Tr}(BA) \ .
+\end{equation}
+
+That we want to get something that is invariant under transformations of $SU(N)$, and that the field strength tensor transforms as it does, we can expect taking the trace will be smart:
+\begin{equation}
+\mathcal{L}_{\text{YM}} = C\text{Tr}[\vec{F}_{\mu\nu}\vec{F}^{\mu\nu}] \ .
+\end{equation}
+
+The above can be seen to give us the invariance we seek by utilising the cyclic property of traces. We now want to determine what the appropriate value of $C$ is. We can quickly arrive to a convenient choice by writing:
+\begin{equation}
+\text{Tr}[F^a_{\mu\nu}T^a F^{b,\mu\nu}T^b] = F^a_{\mu\nu}F^{b,\mu\nu}\frac{1}{2}\delta^{ab} = \frac{1}{2}F^a_{\mu\nu}F^{a,\mu\nu} \ .
+\end{equation}
+Here noting that the trace is neither over the internal gauge indices or the Lorentz indices, but over the internal group indices (i.e. $i$ and $j$ in $\vec{F}_{\mu\nu} = F^a_{\mu\nu} (T^a)^{ \ \ j}_i$).
+
+We thus get the factor of $C$ to be $-\frac{1}{2}$ so that we get:
+\begin{align}
+\mathcal{L}_{\text{YM}} &= -\frac{1}{2}\text{Tr}[\vec{F}_{\mu\nu}\vec{F}^{\mu\nu}] \nonumber\\
+&= -\frac{1}{4}F^a_{\mu\nu}F^{a,\mu\nu} \ .
+\end{align}
+
+\subsection{Gauge Bosons and Feynman Rules}
+
+From the above Lagrangian, we can read off immediately that we expect there to be $N^2 - 1$ gauge bosons - one for each field. A couple of pertinent examples to what we will be covering later are the $SU(3)_{\text{colour}}$ (shorthand: $SU(3)_\text{c}$) and $SU(2)_{\text{left}}$ groups.
+
+These describe invariances of the strong force and weak force respectively with the $SU(3)_{\text{c}}$ group having the generators:
+\begin{equation}
+T^a = \frac{\lambda^a}{2} \ , \ \ a = \underbrace{1, 2, ..., 8}_{G^a_\mu} \ ,
+\end{equation}
+where $G^a_\mu$ are the 8 gluon flavours. For the $SU(2)_\text{left}$, we have the generators:
+\begin{equation}
+T^i = \frac{\sigma^i}{2} \ , \ \ i = \underbrace{1, 2, 3}_{W^1, W^2, W^3} \ ,
+\end{equation}
+where $W^i$ are the weak gauge bosons.
+
+From the Lagrangian - in which we square the field strength tensor - we can see that there will be self-interaction terms of third and fourth order. These have the Feynman rules:
+\begin{align}
+\text{Third-order:}& \ \ \ \ \ gf^{abc} \\
+\text{Fourth-order:}& \ \ \ \ \ g^2f^{xab}f^{xcd} \text{ \ + cyclic permutations of a, b, c, and d} \ . \nonumber
+\end{align}
+From these Feynman rules, and the fact that $f^{abc}$ is totally antisymmetric, we get that all gauge bosons must be different in self-interactions. This can also be expected by the fact that any matrix trivially commutes with itself.
+
+\section{Interaction of Quarks and Gluons in \texorpdfstring{$\boldsymbol{SU(3)_c}$}{Colour SU(3)}}
+
+In QED, we could write the Dirac Lagrangian, which we then coupled to the photon by summing the two Lagrangians. This is what gave us the complete QED Lagrangian, which we write now for reference:
+\begin{equation}
+\mathcal{L}_\text{QED} = \bar{\psi}\big(i\gamma^\mu D_\mu - m\mathbf{1}_4\big)\psi - \frac{1}{4}F_{\mu\nu}F^{\mu\nu} \ .
+\end{equation}
+
+We want to obtain an equivalent Lagrangian for QCD, so that we may describe the behaviour of quarks and gluons completely - allowing us to model much of the phenomena we see at particle accelerators like the LHC.
+
+While the force-carriers transform under the adjoint representation of $SU(N)$, fermions like the quarks transform under the fundamental representation. That is, where gluons are described by an octet ($N^2 - 1$) the quarks are described by a triple:
+\begin{equation}
+q = \begin{pmatrix}
+q_\text{red} \\
+q_\text{green} \\
+q_\text{red}
+\end{pmatrix} \ .
+\end{equation}
+
+By seeing the similarities of the quark and the electron - that they are both point-like spin-1/2 particles - we can expect the quark to satisfy the Dirac equation. Thus the Lagrangian of the quark is not much dissimilar to that of the electron. The only real difference between the two is that the covariant derivative contains a term relating to gluons rather than photons:
+\begin{align}
+\mathcal{L}_q &= \bar{q}_i\big(i\gamma^\mu \partial_\mu \delta_{ij} - g_s\gamma^\mu G^a_\mu (T^a)_{ij} - m_q \delta_{ij}\big)q_j \nonumber\\
+&= i\bar{q}\gamma^\mu\underbrace{\big(\mathbf{1}_3 \partial_\mu + ig_s \vec{G}_\mu\big)}_{\hat{=} \ D_\mu}q - m_q \bar{q}q \ .
+\end{align}
+Here, $\bar{q} \ \hat{=} \ q^\dagger\gamma^0$ and $T^a$ are the generators of $SU(3)_c$ in the fundamental representation: $T^a = \lambda^a / 2$, where $\lambda^a$ are the Gell-Mann matrices.
+
+Our objective now is to show that $\mathcal{L}_q$ is invariant under $SU(3)_c$ gauge transformations. To do this, we recall that objects that transform under fundamental and adjoint action transform as:
+\begin{equation}
+A \mapsto_F A' = UA \ , \ \ A \mapsto_\mathcal{A} A' = UAU^\dagger
+\end{equation}
+
+The quark triplet transforms under the fundamental representation of $SU(3)_c$:
+\begin{equation}
+q \mapsto q' = Uq \ .
+\end{equation}
+Thus if the covariant derivative as we defined above transforms under the adjoint action of $SU(3)_c$ then we have a Lagrangian that is invariant under the group.
+
+We can show the covariant derivative transforms as desired by first considering how the gluon (gauge) field transforms:
+\begin{equation}
+\vec{G}_\mu \mapsto \vec{G}'_\mu = U\vec{G}_\mu U^\dagger + \frac{1}{ig_s}U\partial_\mu U^\dagger \ .
+\end{equation}
+Thus we can write:
+\begin{align}
+D_\mu q \mapsto (D_\mu q)' &= (\mathbf{1}_3\partial_\mu + ig_sU\vec{G}_\mu U^\dagger + \underbrace{U\partial_\mu U^\dagger}_{= \ -(\partial_\mu U)U^\dagger})Uq \nonumber\\
+&= U(\mathbf{1}_3\partial_\mu + ig_s\vec{G}_\mu)q + (\partial_\mu U - (\partial_\mu)U^\dagger U)q \nonumber\\
+&=UD_\mu q \ .
+\end{align}
+Hence $D_\mu$ must transform as we hoped!
+
+The last thing to make it completely obvious is to write how $\bar{q}$ transforms - as here there is a little trick to bear in mind. We can write:
+\begin{equation}
+\bar{q} \mapsto \bar{q'} = q'^\dagger \gamma^0 = q^\dagger U^\dagger \gamma^0 \ .
+\end{equation}
+It is here that the trick rears its head: even though the $\gamma$-matrices and $U$ are all matrices, they act on different group spaces and so commute. We show that this is the case in Appendix 2. We are thus able to continue:
+\begin{equation}
+\bar{q'} = q^\dagger \gamma^0 U^\dagger = \bar{q}U^\dagger \ .
+\end{equation}
+
+Using all of the above transformations, we can see that $\mathcal{L}_q$ is invariant under $SU(3)_c$ transformations. We can now insert the gluon Lagrangian in order to properly couple the quark and gluon fields:
+\begin{equation}
+\mathcal{L}_\text{QCD} \ \overset{?}{=} \ \bar{q}_i\big(i(\gamma^\mu D_\mu)_{ij} - m \delta_{ij}\big)q_j - \frac{1}{4}G^a_{\mu\nu}G^{a,\mu\nu} \ .
+\end{equation}
+
+This looks like it might be the job done, but it isn't quite. In the next section we consider the gauge field propagator and, realising that we have unphysical degrees of freedom, introduce a gauge-fixing term to the Lagrangian. This term brings with it further complications that we analyse.
+
+\section{Gauge Fixing in Yang-Mills Theories}
+
+If we carefully analysed the gauge field propagator of our theory so far, we would find that it is singular. This is due to the fact that time evolution in a theory with gauge invariance is not well-defined. We introduce a gauge-fixing term to the Lagrangian in order to give us a non-singular propagator. This term means that we end up with a propagator that is, however, not unique - we're able to make a choice of gauge. We end up with objects and quantities such as the equations of motion depending on the choice of gauge made.
+
+The gauge-fixing term we introduce is:
+\begin{equation}
+\mathcal{L}_\text{GF} = -\frac{1}{2\xi}(\partial_\mu A^{a,\mu})(\partial_\nu A^{a,\nu}) = -\frac{1}{\xi}\text{Tr}(\partial_\mu \vec{A}^\mu \partial_\nu \vec{A}^\nu) \ ,
+\end{equation}
+which added to our previous Lagrangian breaks its local $SU(N)$ invariance. (We can see that the global symmetry is maintained by the cyclic property of the trace.) This term fixes the unphysical degrees of freedom related to the longitudinal and time components of $A^a_\mu$.
+
+In the limit of $g \rightarrow 0$, we now want to obtain the Euler-Lagrange equations of motion for $A^a_\mu$, obtaining:
+\begin{equation}
+\Big[\eta_{\mu\nu}\partial_\rho\partial^\rho - \big(1 - \frac{1}{\xi}\big)\partial_\mu\partial_\nu\Big]A^{a,\nu} = 0 \ .
+\end{equation}
+We can thus write the Green's function that gives the YM field propagator:
+\begin{equation}
+\Big[\eta^{\mu\nu}\partial_\rho\partial^\rho - \big(1 - \frac{1}{\xi}\big)\partial^\mu\partial^\nu\Big]\Delta^{ab}_{\nu\lambda}(x - y) = \delta^{ab}\delta^\mu_\lambda\delta^{(4)}(x - y) \ .
+\end{equation}
+
+To obtain an expression for $\Delta^{ab}_{\nu\lambda}(x - y)$, we need to make a Fourier transform:
+\begin{equation}
+\Delta^{ab}_{\mu\nu}(x - y) = \int\frac{d^4k}{(2\pi)^4}\tilde{\Delta}^{ab}_{\mu\nu}(k)e^{-ik\cdot (x - y)} \ , \ \ \tilde{\Delta}^{ab}_{\mu\nu}(k) = A^{ab}(k)\eta_{\mu\nu}+ B^{ab}(k)k_\mu k_\nu \ .
+\end{equation}
+Thus, in k-space, we can write:
+\begin{equation}
+\Big[-\eta^{\mu\nu}k^2 + \big(1 - \frac{1}{\xi}\big)k^\mu k^\nu\Big](A^{ab}(k)\eta_{\nu\lambda}+ B^{ab}(k)k_\nu k_\lambda) = \delta^{ab}\delta^\mu_\lambda \ .
+\end{equation}
+
+Making the necessary manipulations, we obtain the result:
+\begin{equation}
+\Delta^{ab}_{\mu\nu}(x - y) = \int\frac{d^4k}{(2\pi)^4}\Big(-\eta_{\mu\nu} + (1 - \xi)\frac{k_\mu k_\nu}{k^2}\Big)\frac{\delta^{ab}e^{-ik\cdot(x - y)}}{k^2 + i\epsilon}
+\end{equation}
+
+We now want to see if we can restore the local $SU(N)$ symmetry to our theory, at least at the infinitesimal level (that is, to leading order in $\theta^a$). To do this, we have to introduce two new complex fields $c^a$ and $\bar{c}^a$, called the Fadeev-Popov ghosts. These fields satisfy the Grassman algebra:
+\begin{equation}
+\{c^a(x), c^b(x)\} = \{c^a(x), \bar{c}^b(x)\} = \{\bar{c}^a(x), \bar{c}^b(x)\} = 0 \ .
+\end{equation}
+
+We can write the Lagrangian term we put these in as:
+\begin{equation}
+\mathcal{L}_\text{FP} = -\bar{c}^a\partial^\mu\Big[\delta^{ab}\partial_\mu + gf^{abc}A^c_\mu\Big]c^b \ .
+\end{equation}
+
+We find that the full Yang-Mills Lagrangian $\mathcal{L} = \mathcal{L}_\text{YM} + \mathcal{L}_\text{GF} + \mathcal{L}_\text{FP}$ is invariant under the Becchi-Rouet-Stora (BRS) transformations:
+\begin{align}
+\delta A^a_\mu \ &\hat{=} \ \omega s A^a_\mu = \omega\big[\delta^{ab}\partial_\mu + gf^{abc}A^c_\mu\big]c^b \ , \nonumber\\
+\delta c^a \ &\hat{=} \ \omega s c^a = \omega \frac{1}{2}gf^{abc}c^b c^c \ , \nonumber\\
+\delta \bar{c}^a \ &\hat{=} \ \omega s \bar{c}^a = \omega \frac{1}{\xi}\partial^\mu A^a_\mu \ .
+\end{align}
+Here, $\omega$ is a quantity that satisfies:
+\begin{equation}
+\omega^2 = 0 \ , \ \ \partial_\mu\omega = 0 \ .
+\end{equation}
+
+This BRS symmetry is actually incredibly important. It ensures YM gauge theories are unitary and renormalisable even in theories with spontaneous symmetry breaking - such as the Standard Model.
+
+\section{QCD Feynman Rules}
+
+Using the work we have done above, we can now write the complete QCD Lagrangian:
+\begin{align}
+\mathcal{L}_\text{QCD} =& -\frac{1}{4}G^a_{\mu\nu}G^{a,\mu\nu} + \bar{q}_i\Big[i\slashed{\partial}\delta_{ij} - m_q\delta_{ij} - g_s\slashed{G}^a(T^a)_{ij}\Big]q_j \nonumber\\
+& -\frac{1}{2\xi}(\partial_\mu G^{a,\mu})(\partial_\nu G^{a,\nu}) - \bar{c}\partial^\mu\Big[\delta^{ab}\partial_\mu + g_sf^{abc}G^c_\mu\Big]c^b \ .
+\end{align}
+
+We can also write the Feynman rules associated with this Lagrangian:
+
+\begin{align}
+\feynmandiagram [horizontal=a to b] {
+a [particle=\({(\nu, b)}\)] -- [gluon, edge label=\(G(k)\), momentum'=\(k\)] b [particle=\({(\mu, a)}\)]
+}; \ \ \ 
+=& \ \ \frac{i\delta^{ab}\Big(-\eta_{\mu\nu} + (1 - \xi)\frac{k_\mu k_\nu}{k^2}\Big)}{k^2 + i\epsilon} \ , \\
+\feynmandiagram [horizontal=a to b] {
+a [particle=\({\bar{c}^{b}}(k)\)] -- [ghost, momentum=\(k\)] b [particle=\({c^{a}}(k)\)]
+}; \ \ \ 
+=& \ \ \frac{i\delta^{ab}}{k^2 + i\epsilon} \ , \\
+\feynmandiagram [horizontal=a to b] {
+a -- [fermion, momentum=\({q(p)}\)] b
+}; \ \ \ \ \ \ \ \
+=& \ \ \frac{i}{\slashed{q} - m_q + i\epsilon} \ , \\
+\feynmandiagram [inline=(b.base), horizontal=a to b] {
+a [particle=\({G^a_\mu}\)] -- [gluon] b,
+b -- [anti fermion] i1 [particle=\({\bar{q}_j}\)],
+b -- [fermion] i2 [particle=\({q_i}\)]
+}; \ \ \ \ \ \ \
+=& \ \ -ig_s\gamma_\mu\frac{(\lambda^a)_{ij}}{2} \ , \\
+\feynmandiagram [inline=(b.base), horizontal=a to b] {
+a [particle=\({G^a_\mu}\)] -- [gluon, momentum=\(k\)] b,
+b -- [gluon, rmomentum'=\(p\)] i1 [particle=\({G^c_\rho}\)],
+b -- [gluon, momentum'=\(q\)] i2 [particle=\({G^b_\nu}\)]
+}; \ \ \ \ \ \ 
+=& \ \ -g_sf^{abc}\Big[\eta^{\mu\nu}(k - q)^\rho + \eta^{\nu\rho}(q - p)^\mu + \eta^{\rho\mu}(p - k)^\nu\Big] \ , 
+\end{align}
+\begin{align}
+\feynmandiagram [inline=(c.base), vertical'=a to b] {
+a [particle=\({G^a_\mu}\)] -- [gluon] i,
+b [particle=\({G^b_\nu}\)] -- [gluon] i,
+c [particle=\({G^c_\rho}\)] -- [gluon] i,
+d [particle=\({G^d_\omega}\)] -- [gluon] i,
+}; \ \ \ \
+=& \ \ -ig_s^2\Big[f^{xab}f^{xcd}(\eta^{\mu\rho}\eta^{\nu\omega} - \eta^{\mu\omega}\eta^{\nu\rho}) \nonumber\\
+& \ \ \ \ \ \ \ + f^{xac}f^{xdb}(\eta^{\mu\omega}\eta^{\nu\rho} - \eta^{\mu\nu}\eta^{\rho\omega}) \nonumber\\
+& \ \ \ \ \ \ \ + f^{xad}f^{xbc}(\eta^{\mu\nu}\eta^{\rho\omega} - \eta^{\mu\rho}\eta^{\nu\omega})\Big] \ , \\
+\feynmandiagram [inline=(b.base), horizontal=a to b] {
+a [particle=\({G^a_\mu}\)] -- [gluon, momentum=\(k\)] b,
+b -- [ghost, rmomentum'=\(p\)] i1 [particle=\({c^b(p)}\)],
+b -- [ghost, momentum'=\(p'\)] i2 [particle=\({c^c(p')}\)]
+}; \ \ \
+=& \ \ -g_sf^{abc}p'_\mu \ .
+\end{align}
+
+\chapter{Renormalisation}
+
+In the theories we look at, without careful preparation we encounter infinities that make the calculations we do meaningless. These infinities arise from the fact that any loops in our diagrams must have their momenta integrated over from zero to infinity - hence they are divergent. Renormalisation is the process of isolating and then removing all of these divergences from the measurable quantities of the theory.
+
+Yet renormalisation has more justification than just expurgating infinities. Considering the idea of an electron placed in a vacuum and then in a solid, the equations of motion are described in both with an electron mass $m$ and $m^*$ respectively. We can say the mass is renormalised from $m$ to $m^*$. The only differences between this and our situation are that in our theories the renormalisation is typically infinite, and we can't ever make a measurement without the interaction that necessitates renormalisation.
+
+\section{1-Loop Renormalisation of \texorpdfstring{$\boldsymbol{\phi^4}$}{Phi 4}-Theory}
+
+In this section we go over the prescription of conventional renormalisation, using the $\phi^4$ theory and performing 1-loop renormalisation.
+
+We will be working with the Lagrangian:
+\begin{equation}
+\mathcal{L}_0 = \frac{1}{2}(\partial_\mu \phi_0)(\partial^\mu \phi_0) - \frac{1}{2}m_0^2 \phi_0^2 - \frac{1}{4!}\lambda_0\phi_0^4 + \Lambda_c^0 \ ,
+\end{equation}
+where $\Lambda_c^0$ is the cosmological constant, which we will ignore from now on. Further, we write:
+\begin{align}
+\phi_0 &= Z_\phi^{1/2}\phi = \Big(1 + \frac{1}{2}\delta Z_\phi\Big)\phi = \phi + \delta\phi \ ; \\
+x_0 &= Z_xx = (1 + \delta Z_x)x = x + \delta x \ , \ \ x \in \{ m^2, \lambda, \Lambda_c \} \ .
+\end{align}
+
+The symbols above having the following meanings:
+\begin{adjustwidth}{-.5in}{-.5in}
+\begin{equation*}
+\begin{aligned}[c]
+\phi_0 \ &: \ \text{bare field} \ , \nonumber\\
+x_0 \ &: \ \text{bare parameter} \ , \nonumber\\
+Z_\phi \ &: \ \text{wavefunction renormalisation constant} \ , \nonumber\\
+\delta \phi , \delta x \ &: \ \text{counter-terms (CT) of renormalisation} \ .
+\end{aligned}
+\qquad
+\begin{aligned}[c]
+\phi \ &: \ \text{renormalised field} \ ; \nonumber\\
+x \ &: \ \text{renormalised parameter} \ ; \nonumber\\
+Z_\lambda \ &: \ \text{vertex renormalisation constant} \ ; \nonumber\\ \\
+\end{aligned}
+\end{equation*}
+\end{adjustwidth}
+
+\subsection{Renormalisation Prescription}
+
+The following is the prescription that we follow in order to perform conventional renormalisation:
+
+\begin{itemize}
+\item[(i)] Calculate the one-particle irreducible (1PI) loop graphs $\mathbf{\Gamma}^{(n)}$ using the bare Lagrangian, $\mathcal{L}_0$.
+\item[(ii)] Define the renormalisation conditions in order to determine the counter-terms $\delta X = \delta X^{(1)} + \delta X^{(2)} + ...$ , going up to the desired loop order.
+\item[(iii)] Calculate the physical observables, such as the S-matrix elements, up to the desired loop order using the bare Lagrangian.
+\item[(iv)] Eliminate the ultra-violet (UV) infinities of the loop graphs against the UV infinities of $\delta\phi$ and $\delta x$ contained in $\phi_0$ and $x_0$ expanded to the desired loop order.
+\end{itemize}
+
+We calculate only the 1PI diagrams as any one-particle reducible (1PR) diagram can be ``cut'' into a set of 1PI diagrams which have the same number of loop integrals, thus if we can normalise for the 1PI diagrams we can for the 1PR diagrams.
+
+We note that, for a renormalisable theory, the number of renormalisation conditions is finite. {\color{red}We also should not include any loop corrections to the asymptotic (in and out) states of the S-matrix element to avoid double-counting from $Z_\phi$.}
+
+\subsection{Mass and Wavefunction Renormalisation}
+
+We write the 1PI self-energy diagrams for two particles:
+\begin{align}
+\mathbf{\Gamma}^{(2)}(p^2) = i&Z_\phi(p^2 - m^2 - \delta m^2) \ +
+\feynmandiagram [inline=(b.base), layered layout, horizontal=b to c] {
+a [particle=\({\phi_0}\)] -- [fermion, edge label'=\({\lambda_0}\)] b
+  -- [min distance=1.5cm, rmomentum'=\({\phi_0, \ m_0^2}\)] b 
+  -- [fermion] c [particle=\({\phi_0}\)]
+}; \nonumber\\
+&+ 
+\feynmandiagram [inline=(b.base), layered layout, horizontal=b to c] {
+a [particle=\({\phi_0}\)] -- [fermion, edge label'=\({\lambda_0}\)] b
+  -- [fermion] c
+  -- [fermion, edge label'=\({\lambda_0}\)] d [particle=\({\phi_0}\)],
+b -- [half left, momentum=\({\phi_0, \ m_0^2}\)] c,
+b -- [half right, momentum'=\({\phi_0, \ m_0^2}\)] c
+}; + \ \mathcal{O}(\hbar^3) \ .
+\end{align}
+
+We are interested in considering renormalisation at one-loop order as an example - i.e. only to $\mathcal{O}(\hbar)$ order - and so we can ignore higher-order terms starting with the second diagram which is two-loop.
+
+We now have to make a choice of how to fix our propagator - this is something for which we need not think any differently to fixing gauges. For situations in which particles can travel asymptotically large distances, or where the energies involved are small, a physically appealing renormalisation scheme exists called the ``on-shell" renormalisation scheme. We write this scheme:
+\begin{equation}
+\mathbf{\Gamma}^{(n)}(p^2 = m^2) = 0 \ , \ \ \frac{1}{i}\frac{d\mathbf{\Gamma}^{(n)}(p^2 = m^2)}{dp^2} = 1 \ .
+\end{equation}
+Other schemes exist, we'll encounter some of them later when renormalising the quartic coupling constant.
+
+We now want to apply this scheme to renormalise at one-loop order:
+\begin{equation}
+\mathbf{\Gamma}^{(2)}_{(\text{one-loop})}(p^2) =
+\feynmandiagram [inline=(b.base), layered layout, horizontal=b to c] {
+a [particle=\({\phi_0}\)] -- [fermion] b
+  -- [min distance=1.5cm, rmomentum'=\({\phi_0, \ m_0^2}\)] b 
+  -- [fermion] c [particle=\({\phi_0}\)]
+}; = -\frac{i\lambda}{2}\int^{+\infty}_{-\infty} \frac{d^4k}{(2\pi)^4}\frac{i}{k^2 - m^2 + i\epsilon} \ .
+\end{equation}
+We perform a Wick rotation, rotating from Minkowski space to Euclidean space. This rotation can be written as the relation $k^0 = ik^0_E$. This lets us rewrite the above as:
+\begin{equation}
+\mathbf{\Gamma}^{(2)}_{(\text{one-loop})}(p^2) = \frac{\lambda}{2}\int_{\mathbb{R}^4} \frac{id^4k_E}{(2\pi)^4}\frac{1}{-k_E^2 - m^2} \ ,
+\end{equation}
+where we are being a little lazy and not choosing a specific coordinate system for integration. Also, $k_E$ is ordinary Euclidean momentum.
+
+In the next line we will introduce a cut-off, $\Lambda$, which allows us to get an evaluation of the divergence which we will then subtract from our theory. We call this cut-off the "UV cut-off" as it's an upper limit on the momenta of the interaction. We will also no longer be integrating using cartesian coordinates and instead shift to a spherical coordinate system for convenience (this is why Wick rotation is useful!).
+
+We can now rewrite and evaluate what we have by using the spherical coordinate identity:
+\begin{equation}
+d^4k_E = 2\pi^2 k^3_E dk_E = \pi^2 k^2_E dk^2_E \ .
+\end{equation}
+We obtain:
+\begin{align}
+\mathbf{\Gamma}^{(2)}_{(\text{one-loop})}(p^2) &= -\frac{i\lambda}{2}\int^{\Lambda^2}_0 \frac{\pi^2 k^2_E d^4k_E}{(2\pi)^4}\frac{1}{k_E^2 + m^2} \nonumber\\
+&= -\frac{i\lambda}{32\pi^2}\Big[\Lambda^2 - m^2\ln\Big(\frac{\Lambda^2}{m^2}\Big)\Big] \ .
+\end{align}
+
+Our result is independent of $p^2$, the external momentum, and so in order to satisfy the conditions of our choice of renormalisation scheme, we obtain the results:
+\begin{equation}
+\delta Z_\phi = 0 \ , \ \ \delta m^2 = -\frac{\lambda}{32\pi^2}\Big[\Lambda^2 - m^2 \ln\Big(\frac{\Lambda^2}{m^2}\Big)\Big] \ .
+\end{equation}
+If we went beyond one-loop order, we would find that $\delta Z_\phi \neq 0$.\footnote{See chapters 7.5 and 10.2 of Peskin and Schroeder or chapter 2 of Cheng and Li to get a better idea of this maths.}
+
+\subsection{Quartic Coupling Renormalisation}
+
+Having dealt with the self-energy interactions of our theory, we now need to renormalise the coupling constant associated with the four-particle interactions:
+\begin{align}
+\mathbf{\Gamma^{(4)}}(p_i) = -iZ_\phi^2\lambda_0 \ &+ 
+\feynmandiagram [inline=(b.base), layered layout, horizontal=b to d] {
+a [particle=\({p_1}\)] -- [fermion] b,
+c [particle=\({p_2}\)] -- [fermion] b,
+b -- [half left, rmomentum=\(k\)] d,
+b -- [half right, momentum'=\(k + p_1 + p_2\)] d,
+d -- [fermion] e [particle=\({p_3}\)],
+d -- [fermion] f [particle=\({p_4}\)]
+}; + 
+\feynmandiagram [inline=(b.base), layered layout, horizontal=a to c] {
+a [particle=\({p_2}\)] -- [fermion] b,
+c [particle=\({p_4}\)] -- [fermion] b,
+b -- [half left, rmomentum=\(k\)] d,
+b -- [half right, momentum'=\(k + p_1 - p_3\)] d,
+d -- [fermion] e [particle=\({p_1}\)],
+d -- [fermion] f [particle=\({p_3}\)]
+}; \nonumber\\ & \ \ \ \ +  
+\feynmandiagram [inline=(d.base), spring layout, vertical=b to d] {
+d -- [fermion] f [particle=\({p_4}\)],
+c [particle=\({p_2}\)] -- [fermion] b,
+b -- [half left, rmomentum=\(k\)] d,
+b -- [half right, momentum'=\(k + p_1 - p_4\)] d,
+b -- [fermion] e [particle=\({p_3}\)],
+a [particle=\({p_1}\)] -- [fermion] d,
+};
+\end{align}
+
+Looking at the above diagrams, it is quite easy to spot that the Mandelstam variables will play a role. These variables are defined:
+\begin{align}
+s &= (p_1 + p_2)^2 = (p_3 + p_4)^2 \ , \nonumber\\ t &= (p_1 - p_3)^2 = (p_2 - p_4)^2 \ , \nonumber\\ u &= (p_1 - p_4)^2 = (p_2 - p_3)^2 \ .
+\end{align}
+We thus may define the diagrams in order as $\tilde{\mathbf{\Gamma}}^{(4)}(s)$, $\tilde{\mathbf{\Gamma}}^{(4)}(t)$, $\tilde{\mathbf{\Gamma}}^{(4)}(u)$, also giving them the names ``s-channel", ``t-channel" and ``u-channel" one-loop diagrams respectively.
+
+We now need to choose our renormalisation scheme. Some options we may consider are:
+\begin{equation}
+\begin{array}{ll}
+\text{(i) Infra-red (IR) Renorm.:} & \mathbf{\Gamma}^{(4)}(p_i = 0) = -i\lambda \ ; \\
+\text{(ii) Symmetric Renorm.:} & \mathbf{\Gamma}^{(4)}(s = t = u = \frac{4m^2}{3}) = -i\lambda \ ;\\
+\text{(iii) Minimal Subtraction (MS) Renorm.:} & \mathbf{\Gamma}^{(4)}(p_i)|_\text{UV-part} = 0 \ .
+\end{array}
+\end{equation}
+It is worth noting that in general any choice of scheme should give the same results in the observable quantities we obtain, as with different choices of gauge fixing conditions.
+
+\textit{As an aside: in certain cases this is not the case as some of the choices may introduce anomalies into the conserved currents (or in the QFT language, the anomalies are introduced into the Ward-Takahashi identities). In cases where the anomalies only get introduced by particular renormalisation scheme choices, we make the symmetry they break an axiom and choose only from the renormalisation schemes that do not introduce an anomaly.}
+
+\textit{One can foresee situations where all of the schemes introduce anomalies, where these are all the same we have a relatively easy job once more - we've lost the symmetry and we now need to analyse the consequences of that. Where they introduce different anomalies we run yet again into difficulty. I don't actually know of any theories and symmetries where this latter case occurs, and even less idea how one would deal with that.}
+
+For our analysis, we pick the IR renormalisation scheme ($p_i \mapsto 0$), giving us for the s-channel one-loop diagram:
+\begin{align}
+\feynmandiagram [inline=(b.base), layered layout, horizontal=b to d] {
+a [particle=\({p_1}\)] -- [fermion] b,
+c [particle=\({p_2}\)] -- [fermion] b,
+b -- [half left, rmomentum=\(k\)] d,
+b -- [half right, momentum'=\(k\)] d,
+d -- [fermion] e [particle=\({p_3}\)],
+d -- [fermion] f [particle=\({p_4}\)]
+}; = \tilde{\mathbf{\Gamma}}^{(4)}(0) &= \frac{(-i\lambda)^2}{2}\int \frac{d^4k}{(2\pi)^4}\frac{i^2}{(k^2 - m^2 + i\epsilon)^2} \nonumber\\
+&= \frac{i\lambda^2}{2}\int \frac{d^4k}{(2\pi)^4} \frac{1}{(k^2_E + m^2)^2} \ \leftarrow \text{Wick rotation} \ , \nonumber\\
+&= \frac{i\lambda^2}{32\pi^2} \int \frac{k^2_E dk^2_E}{(k_E^2 + m^2)^2} \ \leftarrow \text{Spherical polar} \ , \nonumber\\
+&= \frac{i\lambda^2}{32\pi^2} \Big[\ln\Big(\frac{\Lambda^2}{m^2}\Big) + m^2\Big(\frac{1}{\Lambda^2} - \frac{1}{m^2}\Big)\Big] \ , \nonumber \\
+&\simeq \frac{i\lambda^2}{32\pi^2} \Big[\ln\Big(\frac{\Lambda^2}{m^2}\Big) - 1\Big]
+\end{align}
+
+Looking at what we initially wrote for $\mathbf{\Gamma}^{(4)}$ and noticing that all three channels contribute the same, we can see that at one-loop we can write:
+\begin{equation}
+\mathbf{\Gamma}^{(4)}(0) = -i\lambda - i\delta\lambda^{(1)} + 3\tilde{\mathbf{\Gamma}}^{(4)}(0) \overset{!}{=} -i\lambda \ \Rightarrow \ \delta\lambda^{(1)} = -3i\tilde{\mathbf{\Gamma}}^{(4)}(0) \ .
+\end{equation}
+
+\subsection{Summary of One-Loop Renormalisation of \texorpdfstring{$\boldsymbol{\phi^4}$}{Phi 4}-Theory}
+
+We can now write the collection of renormalisation corrections we have obtained for the $\phi^4$ theory:
+\begin{equation}
+\delta Z_\phi^{(1)} = 0 \ , \ \ \delta m^{2(1)} = -\frac{\lambda}{32\pi^2}\Big[\Lambda^2 - m^2\ln\Big(\frac{\Lambda^2}{m^2}\Big)\Big] \ \ , \nonumber
+\end{equation}
+\begin{equation}
+\delta \lambda^{(1)} = \frac{3\lambda^2}{32\pi^2}\Big[\ln\Big(\frac{\Lambda^2}{m^2}\Big) - 1\Big] \ .
+\end{equation}
+The first line of the above being the results we obtained from applying the on-shell scheme to the mass and wavefunction renormalisation and the second being the result we just obtained using the IR scheme on the quartic coupling renormalisation.
+
+Though we didn't obtain it, the one-loop cosmological constant renormalisation correction looks like:
+\begin{equation}
+\delta \Lambda_c^{(1)} = -\frac{\Lambda^4}{64\pi^2} \ .
+\end{equation} 
+
+\section{Dimensional Regularisation}
+
+Dimensional regularisation (DR) is an alternative programme to the renormalisation programme we just discussed for the $\phi^4$ theory. The scheme was first introduced by t'Hooft - as many things in this area of physics. In DR, we perform an analytic continuation from $4$ dimensions to $4 - 2\epsilon$ after having performed a Wick rotation into Euclidean space. Here $\epsilon \in \mathbb{C} \ , \ \ \abs{\epsilon} \ll 1$.
+
+{\color{red}FINISH THIS SECTION!!!!!}
+
+\chapter{Spontaneous Symmetry Breaking and Electroweak Interaction}
+
+Before delving into the actual examples, it is worth asking what spontaneous symmetry breaking (SSB) is. The idea behind it is that in a theory that undergoes SSB is a theory whose symmetry isn't actually truly lost, but for which the ground state explicitly does not possess the same symmetry of the theory.
+
+\section{Three Simple Examples}
+
+\subsection{Classical Dynamics}
+
+We here show that for a theory with an arbitrary ground-state, we can define a the old dynamical variable in terms of the ground-state and a new dynamical variable which posses a zero-valued ground-state.
+
+Consider a classical system of a spring fixed to a point and a mass held at the other end. If the gravitational acceleration $g = 0$ then the mass is held at some position, and if $g = g'$ where $g'$ is some positive constant then the mass is held at some lower point proportional to the spring constant.
+
+We describe these dynamics by the Lagrangian:
+\begin{equation}
+L = \frac{1}{2}m\dot{x}^2 - \frac{1}{2}kx^2 + mgx \ ,
+\end{equation}
+for which the Euler-Lagrange equation is written:
+\begin{equation}
+\frac{d}{dt}\Big(\frac{\partial L}{\partial \dot{x}}\Big) - \frac{\partial L}{\partial x} = 0 \ .
+\end{equation}
+
+We consider that for arbitrary $g$ the ground state is given by the case $\frac{\partial L}{\partial x} = 0$, giving us:
+\begin{equation}
+\langle x \rangle_g = \frac{mg}{k} \ \hat{=} \ l \ \Rightarrow \ \langle x \rangle_0 = 0 \ .
+\end{equation}
+
+We now rewrite our dynamical variable $x$ in terms of the ground state:
+\begin{equation}
+x \ \hat{=} \ \langle x \rangle_g + y \ .
+\end{equation}
+Plugging the above into our Lagrangian and applying the E-L equation, we obtain:
+\begin{equation}
+L = \frac{1}{2}m\dot{y}^2 - \frac{1}{2}ky^2 + \text{const.} \ ,
+\end{equation}
+for which we obtain that the ground state of our new dynamical variable $y$ as being:
+\begin{equation}
+\langle y \rangle_g = 0 \ .
+\end{equation}
+
+\subsection{Quantum Mechanics}
+
+We now do the same for the following quantum system:
+
+\begin{equation}
+\begin{aligned}
+\hat{H} \ &= \frac{\hat{p}^2}{2m} + \frac{1}{2}k\hat{x}^2 + eE\hat{x} \ , & \hat{x} \ &\propto \ \hat{a} + \hat{a}^\dagger \ , & \big[\hat{x}, \ \hat{p}\big] &= i\hbar \nonumber\\
+&= \hbar\omega\Big[\hat{a}^\dagger\hat{a} + f(\hat{a} + \hat{a}^\dagger) + \frac{1}{2}\Big] \ , & \hat{p} \ &\propto i(\hat{a} \ - \ \hat{a}^\dagger) \ , & \big[\hat{a}, \ \hat{a}^\dagger\big] &= 1 \ .
+\end{aligned}
+\end{equation}
+Here the function $f(\hat{a} + \hat{a}^\dagger) \propto eE$, and $\hat{a}$ is the usual annihilation operator:
+\begin{equation}
+\hat{a}\vert 0 \rangle_{f = 0} = 0 \ .
+\end{equation}
+
+We want to get rid of linear terms in $\hat{x}$ to get a better ground-state, to do this we define a new annihilation operator:
+\begin{equation}
+\hat{b} \ \hat{=} \ f + \hat{a} \ ,
+\end{equation}
+this giving us the new Hamiltonian:
+\begin{equation}
+\hat{H} \ = \hbar\omega\big[\hat{b}^\dagger\hat{b} + \frac{1}{2} + f^2\big] \ .
+\end{equation}
+
+We can now write the true ground-state:
+\begin{equation}
+\vert \Omega \rangle \ \hat{=} \ \vert 0 \rangle_{f \neq 0} \ ,
+\end{equation}
+for which:
+\begin{equation}
+\hat{b} \vert \Omega \rangle = 0 \ \Rightarrow \ \hat{a}\vert \Omega \rangle = -f\vert \Omega \rangle \ .
+\end{equation}
+
+Finally, using perturbation theory and the idea of coherent state, we can write:
+\begin{equation}
+\vert \Omega \rangle = Ne^{-f\hat{a}^\dagger}\vert 0 \rangle_{f = 0} \ .
+\end{equation}
+
+\subsection{Field Theory}
+
+We finally do the same as the last two examples but for a field theory. To do so we recall that dynamics $x = x(t)$ can be interpreted as a (0 + 1)D field theory, where QFT ($\phi = \phi(\vec{x}, t)$) is a (3 + 1)D field theory:
+\begin{equation}
+\dot{x} \ \hat{=} \ \frac{d}{dt}x \mapsto \partial_\mu\phi(\vec{x}, t) \ .
+\end{equation}
+
+For this section we consider the Lagrangian:
+\begin{equation}
+\mathcal{L} = \frac{1}{2}(\partial_\mu\phi)^2 - \frac{1}{2}m^2\phi^2 + \bar{t}\phi \ , \ \ V \ \hat{=} \ \frac{1}{2}m^2\phi^2 - \bar{t}\phi \ .
+\end{equation}
+
+Once more writing the E-L and looking for the ground-state:
+\begin{equation}
+\underbrace{\partial_\mu\Big(\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi)}\Big)}_{= \ 0} - \frac{\partial\mathcal{L}}{\partial\phi} = \frac{\partial V}{\partial\phi} = 0 \ \Rightarrow \ \langle \phi \rangle = \frac{\bar{t}}{m^2} \ .
+\end{equation}
+
+We expand about the vacuum expectation value (VEV) of $\phi$, writing:
+\begin{equation}
+\phi(x) \ \hat{=} \ \langle\phi\rangle + h(x) \ , \ \ \langle h \rangle = 0 \ ,
+\end{equation}
+using the E-L equations to obtain the new Lagrangian:
+\begin{equation}
+\mathcal{L} = \frac{1}{2}(\partial_\mu h)^2 - \frac{1}{2}m^2h^2 + \frac{\bar{t}^2}{2m^2} \ .
+\end{equation}
+
+We note that we have obtained a massive scalar field $h(x)$ for which its mass $m_h = \abs{m}  > 0$ does not depend on the tadpole parameter $\bar{t}$.
+
+\section{Global \texorpdfstring{$\boldsymbol{SO(2)}$}{SO(2)}}
+
+The Lagrangian for a scalar $SO(2)$-symmetric theory is:
+\begin{equation}
+\mathcal{L} = \frac{1}{2}(\partial_\mu\Phi)^2 - \frac{1}{2}m^2\Phi^2 - \frac{\lambda}{4}\Phi^4 \ , \ \ \Phi = \begin{pmatrix}
+\Phi_1 \\ \Phi_2
+\end{pmatrix} \ .
+\end{equation}
+
+Considering the Hamiltonian, which must be positive-definite to ensure a field with positive energy, we can see that we require $\lambda > 0$ while we need not put any such requirement on $m^2$ (as the $\phi^4$ term dominates in the integral that yields the energy of the field).
+
+Looking once more for the ground states, we see that we can write:
+\begin{align}
+\frac{\partial V}{\partial\Phi_1} = 0 = \Phi_1 \big[m^2 + \lambda(\Phi_1^2 + \Phi_2^2)\big] \ , \nonumber\\
+\frac{\partial V}{\partial\Phi_2} = 0 = \Phi_2 \big[m^2 + \lambda(\Phi_1^2 + \Phi_2^2)\big] \ .
+\end{align}
+
+We get two sets of possible solutions:
+\begin{align}
+m^2 &\geq 0: &\langle \Phi_1 \rangle& = \langle \Phi_2 \rangle = 0 \ ; \nonumber\\
+m^2 &< 0: &\langle \Phi_1 \rangle&^2 + \langle \Phi_2 \rangle^2 = v \ , \ \ v \ \hat{=} \ \frac{-m^2}{\lambda} > 0 \ .
+\end{align}
+
+The former solution is rather boring. There is no SSB going on here, and in particular we can easily see that the state is invariant under $SO(2)$.
+
+This second solution is a circle equation which, when one plots the potential, is the ring of minima in a "Mexican-hat" shape. We can write a possible value of $\Phi$ as:
+\begin{equation}
+\langle \Phi \rangle = \begin{pmatrix}
+0 \\ v
+\end{pmatrix} \ .
+\end{equation}
+
+We are able to obtain all other vacuum solutions $\langle\Phi\rangle$ using the $SO(2)$ transformation rule:
+\begin{equation}
+e^{i\theta\sigma_2}\underset{\langle\Phi\rangle}{\begin{pmatrix}
+0 \\ v
+\end{pmatrix}} \underset{\neq}{=} \underset{\langle\Phi'\rangle} {\begin{pmatrix}
+v_1 \\ v_2
+\end{pmatrix}}
+\end{equation}
+
+
+
+\section{Goldstone's Theorem}
+
+\section{Higgs-Brout-Englert Mechanism}
+
+\chapter{The Standard Model}
+
+\section{Symmetry Breaking}
+
+\section{Fermions in the SM}
+
+\subsection{Dirac and SM Fermions}
+
+\subsection{Gauge-Kinetic Lagrangian}
+
+\subsection{EM Interaction}
+
+\subsection{Z-Boson Interaction}
+
+\subsection{Yukawa Interaction}
+
+\subsection{\texorpdfstring{$\boldsymbol{W^\pm}$}{W +/-}-Boson Interactions}
+
+\chapter{Appendices}
+
+\section{Appendix 1 - Transforming the YM Field Strength Tensor}
+
+In this appendix we give the proof that the field tensor transforms under the adjoint action of $SU(3)_c$. The ansatz we had stated was:
+\begin{equation}
+\vec{F}_{\mu\nu} = \partial_\mu \vec{A}_\nu - \partial_\nu \vec{A}_\mu + ig\Big[\vec{A}_\mu , \ \vec{A}_\nu\Big] \ .
+\end{equation}
+
+Using this expression and the gauge transformation of the Yang-Mills field:
+\begin{equation}
+\vec{A}_\mu \mapsto \vec{A'}_\mu = U\vec{A}_\mu U^\dagger + \frac{1}{ig}U\partial_\mu U^\dagger \ ,
+\end{equation}
+we are able to now perform our proof.
+
+To make things more approachable, we split up the expression we will obtain into three parts: of zero, one and two derivatives of $U$.
+
+\begin{equation}
+\vec{F}_{\mu\nu} \mapsto \vec{F'}_{\mu\nu} = \partial_\mu \vec{A'}_\nu - \partial_\nu \vec{A'}_\mu + ig\big[\vec{A'}_\mu, \vec{A'}_\nu\big] \ \hat{=} \ \vec{F}^{(0)}_{\mu\nu} + \vec{F}^{(1)}_{\mu\nu} + \vec{F}^{(2)}_{\mu\nu} \ .
+\end{equation}
+
+Dealing with the part with zero derivatives first, we get:
+\begin{align}
+\vec{F}^{(0)}_{\mu\nu} &= U(\partial_\mu \vec{A}_\nu) U^\dagger - U(\partial_\nu \vec{A}_\mu) U^\dagger + ig\underbrace{\big[U\vec{A}_\mu U^\dagger, U\vec{A}_\nu U^\dagger\big]}_{= \ U[\vec{A}_\mu, \vec{A}_\nu]U^\dagger} \nonumber\\
+&= U\vec{F}_{\mu\nu}U^\dagger \ .
+\end{align}
+
+From the above, we want our next two parts to be zero. Dealing with the single derivatives first:
+\begin{align}
+\vec{F}^{(1)}_{\mu\nu} = \ &(\partial_\mu U)\vec{A}_\nu U^\dagger + U\vec{A}_\nu(\partial_\mu U^\dagger) \nonumber\\
+&- (\partial_\nu U)\vec{A}_\mu U^\dagger - U\vec{A}_\mu (\partial_\nu U^\dagger) \nonumber\\
+&+ \big[U\partial_\mu U^\dagger, U\vec{A}_\nu U^\dagger\big] + \big[U\vec{A}_\mu U^\dagger, U\partial_\nu U^\dagger\big] \ .
+\end{align}
+By expanding the commutation operators and using the relation that:
+\begin{equation}
+\partial_\mu (UU^\dagger) = 0 \ \Rightarrow \ (\partial_\mu U)U^\dagger = -U\partial_\mu U^\dagger \ ,
+\end{equation}
+we get hat all our terms cancel out in this expression.
+
+Thus, we now just  want all the terms in the final part, of double derivatives of $U$, to cancel out.
+\begin{equation}
+\vec{F}^{(2)}_{\mu\nu} = \partial_\mu (U \partial_\nu U^\dagger) - \partial_\nu (U \partial_\mu U^\dagger) + [U\partial_\mu U^\dagger , U\partial_\nu U^\dagger] \ .
+\end{equation}
+The terms with $\partial_\mu\partial_\nu U^\dagger$ cancel immediately as they are symmetric. Once more expanding the commutation operators and using the same relation as we did prior from $\partial_\mu (UU^\dagger) = 0$, we get all the remaining terms cancelling again.
+
+We have thus shown that the field strength tensor we have written down does indeed transform as desired.
+
+\section{Appendix 2 - Direct Products}
+
+In this appendix we show that the concept of direct products gives us precisely the result that:
+\begin{equation}
+\big[\gamma^\mu , U\big] = 0 \ , \ \ \gamma^\mu \in GL(4, \mathbb{C}) \ , \ \ U \in SU(3)_c \ .
+\end{equation}
+
+As a simple example that can be easily generalised, we consider two matrices $A \in GL(n, \mathbb{C})$ and $B \in GL(m, \mathbb{C})$. We are  able to define new matrices:
+\begin{equation}
+M = A \otimes B \in GL(n * m, \mathbb{C}) \ ,
+\end{equation}
+which have the property:
+\begin{align}
+M_1 \cdot M_2 &= (A_1 \otimes B_1) \cdot (A_2 \otimes B_2) \nonumber\\
+&= (A_1 \cdot A_2) \otimes (B_1 \cdot B_2) \in GL(n * m, \mathbb{C}) \ .
+\end{align}
+
+Written explicitly for the case $n = m = 2$:
+\begin{equation}
+A = \begin{pmatrix}
+a_1 & a_2 \\ a_3 & a_4
+\end{pmatrix} \ , \ \ B = \begin{pmatrix}
+b_1 & b_2 \\ b_3 & b_4
+\end{pmatrix}
+\end{equation}
+\begin{align}
+A \otimes B &= \begin{pmatrix}
+a_1 B & a_2 B \\ a_3 B & a_4 B
+\end{pmatrix} \nonumber\\
+&= \begin{pmatrix}
+a_1 b_1 & a_1 b_2 & a_2 b_1 & a_2 b_2 \\
+a_1 b_3 & a_1 b_4 & a_2 b_3 & a_2 b_4 \\
+a_3 b_1 & a_3 b_2 & a_4 b_1 & a_4 b_2 \\
+a_3 b_3 & a_3 b_4 & a_4 b_3 & a_4 b_4
+\end{pmatrix} \neq B \otimes A
+\end{align}
+
+Seeing that the above means we can write:
+\begin{align}
+\gamma^\mu &\equiv \gamma^\mu \otimes \mathbf{1}_3 \ , \ \ \mathbf{1}_3 \in SU(3)_c \\
+U &\equiv \mathbf{1}_4 \otimes U \ , \ \ \mathbf{1}_4 \in GL(4, \mathbb{C}) \ ,
+\end{align}
+we are able to now show:
+\begin{align}
+\big[\gamma^\mu , U\big] &\equiv \big[\gamma^\mu \otimes \mathbf{1}_3 , \mathbf{1}_4 \otimes U\big] \nonumber\\ 
+&= (\gamma^\mu \cdot \mathbf{1}_4) \otimes (\mathbf{1}_3 \cdot U) - (\mathbf{1}_4 \cdot \gamma^\mu) \otimes (U \cdot \mathbf{1}_3) \nonumber\\
+&= 0
+\end{align}
+
+We can generalise this concept of tensor products to any number of groups (or matrices):
+\begin{align}
+(A_1 \otimes A_2 &\otimes ... \otimes A_n) \cdot (B_1 \otimes B_2 \otimes ... \otimes B_n) \nonumber\\
+&= (A_1 \cdot B_1) \otimes (A_2 \cdot B_2) \otimes ... \otimes (A_n \cdot B_n) \ ,
+\end{align}
+where $A_i$ and $B_i$ are matrices of the same group.
+
+If we construct a new group $G = G_A \otimes G_B$ and corresponding Lie algebra $L = L_A \otimes L_B$, we can express their generators as:
+\begin{equation}
+G(\theta^A, \theta^B) = e^{i\theta^A T^A\otimes\mathbf{1}_B + i\theta^B \mathbf{1}_A\otimes T^B} \ , \ \ T^A \subset L_A \ , \ \ T^B \subset L_B \ .
+\end{equation}
+Here, $T^A \otimes \mathbf{1}_B$ and $\mathbf{1}_A \otimes T^B$ are the generators of the group and $\mathbf{1}_H$ is the identity element of the group $H$.
+
+\end{document}
