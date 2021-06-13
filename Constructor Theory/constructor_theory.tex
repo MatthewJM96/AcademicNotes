@@ -32,6 +32,15 @@
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
 
+
+\usepackage{xparse}
+%
+\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\setargs{#1}}
+\NewDocumentCommand{\setargs}{>{\SplitArgument{1}{;}}m}
+{\setargsaux#1}
+\NewDocumentCommand{\setargsaux}{mm}
+{\IfNoValueTF{#2}{#1} {#1\,\delimsize|\,\mathopen{}#2}}%{#1\:;\:#2}
+
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
 
@@ -118,6 +127,7 @@ These notes are entirely based upon the work of David Deutsch, Chiara Marletto a
 	\item[\textbf{Constructor Theory}] The framework of principles that regulate how subsidiary theories can be written.
 	\item[\textbf{Subsidiary Theory}] A collection of statements of what transformations are and are not possible, written in constructor-theoretic language.
 	\item[\textbf{Substrate}] A system that has state and can cause or react to transformations.
+	\item[\textbf{Generic Substrate}] Substrates that occur naturally that can be prepared, via tasks, as other (potentially composite) substrates.
 	\item[\textbf{Constructor}] A substrate that facilitates a transformation on other substrates with no change to its own state.
 	\item[\textbf{Variable}] A set of disjoint attributes for which a substrate can be in a state with some distribution over these attributes. \textit{Note}: two substrates in combination may have variables (and so attributes) that are not present independently in the two substrates - such as distance between centre of masses.
 	\item[\textbf{Attribute}] A property of a substrate, capable of being modified by some transformation. An attribute can be defined as the set of states of a substrate that hold that attribute.
@@ -131,9 +141,11 @@ These notes are entirely based upon the work of David Deutsch, Chiara Marletto a
 
 \begin{itemize}
 	\item[\textbf{Substrate}] $\textbf{\textsc{S}}$ is the set of all states the substrate can be in (precise definitions from subsidiary theories). Latin alphabet letters in same font are other substrates, $\textbf{\textsc{E}}$ often being used to denote the environment.
+	\item[\textbf{Constructor}] Constructors being substrates use the same font rules as all other substrates, but we reserve the character  $\textbf{\textsc{C}}$ to denote a substrate that is a constructor. Specifically, given a task denoted $\mathcal{T}$ for which a constructor facilitates realisation, we would write that constructor as $\textbf{\textsc{C}}_\mathcal{T}$.
 	\item[\textbf{Substrate State}] $\textsc{S} \in \textbf{\textsc{S}}$ is a state of a substrate $\textbf{\textsc{S}}$. Latin alphabet letters in same font are other substrate states, except where specified.
 	\item[\textbf{Variable}] $X$ is the set of disjoint attributes that make up the variable (precise definitions from subsidiary theories). Upper-case Latin alphabet letters in the same font are other variables, except where specified.
 	\item[\textbf{Attribute}] $x \in X$ is an attribute in the variable $X$. An attribute can also be a member of a substrate state: $x \in \textsc{S}$. Lower-case Latin alphabet characters in the same font are other attributes, except where specified.
+	Another useful way of talking about an attribute is as the set of all states of a substrate $\textbf{\textsc{S}}$ containing that attribute: $$\textsc{S}_x = \set{\, \textsc{S} \ ; \ \forall \ \textsc{S} \in \textbf{\textsc{S}}, \ x \in \textsc{S} \,}$$ We use symbols of the kind $\textsc{S}_x$ to refer to such, using the same font as for substrate states with a subscript of the same font as used to indicate attributes.
 	\item[\textbf{Task}] $\mathcal{T} = \{\,x_{i} \rightarrow y_{i}\,\}, \ \forall \ i \in \{1, 2, 3, \ldots, N\}$ is a task described by a set of mappings from input attributes to output attributes. In the given definition, $N \in \mathbb{Z}^{+}$ is the number of mappings necessary to define the given task. Latin alphabet characters in the same font are other tasks, except where specified.
 	We mark a task as possible by writing $\mathcal{T}^{\underline{\text{\cmark}}}$ and likewise a task as impossible by writing $\mathcal{T}^{\underline{\text{\xmark}}}$.
 \end{itemize}
@@ -196,7 +208,11 @@ We therefore have some new definitions:
 	\item[\textbf{Non-perturbing}] measurements are any measurements where $y_x$ as in the definition of $\mathcal{M}(X)$ has the property {\color{red}$y_x \subseteq x$ (I think: $y_x = x \ \forall \ x \in X$)}.
 \end{itemize}
 
-\section{Universal Principles}
+\section{Principles}
+
+\subsection{Universal Principles}
+
+The following three principles of constructor theory are assumed to hold universally, that is, for all substrates and tasks.
 
 \begin{itemize}
 	\item[\textbf{Counter-factual Principle}] Subsidiary laws are expressed entirely as a collection of statements saying what transformations are and are not possible on system states.
@@ -208,10 +224,35 @@ We therefore have some new definitions:
 				(\mathcal{A} \otimes \mathcal{I})(\textsc{S}_{1} \oplus \textsc{S}_{2}) = \mathcal{A}\textsc{S}_{1} \oplus \ \textsc{S}_{2}
 			\end{split}
 		\end{equation}
-	\item[\textbf{}]
+	\item[\textbf{Interoperability Principle}] Given two substrates, $\textbf{\textsc{M}}$ and $\textbf{\textsc{N}}$, with information variables $X$ and $Y$ one apiece, the combined substrate $\textbf{\textsc{M}} \oplus \textbf{\textsc{N}}$ has the information variable: $X \times Y = \set*{(x, y); x \in X, y \in Y}$. Thus combined substrates must allow copying information from one to the other (dark matter couldn't, for example, be truly ``dark").
 \end{itemize}
 
-\subsection{Concepts}
+\subsection{Non-Universal Principles}
+
+The following five principles of constructor theory are required to hold for at least some class of substrates, but are assumed to be true universally.
+
+\begin{itemize}
+	\item[\textbf{Variable Distinguishability}] For a variable $X$, if each attribute is distinguishable from each other attribute, then we can also say that $X$ is distinguishable from other variables. We can write:
+		\begin{equation}
+		x \perp y \ \forall \ x,\, y \in X, \ x \neq y \ \Rightarrow \ X \perp Y \ \forall \ Y, \ X \neq Y
+		\end{equation}where $Y$ are also variables.
+	\item[\textbf{State Distinguishability}] For some attributes $x$ and $y$, if all states holding $x$ are distinguishable from all states holding $y$, then we can conclude that $x$ and $y$ are also distinguishable. We can write:
+		\begin{equation}
+			\textsc{L} \perp \textsc{M} \ \forall \ \textsc{L} \in \textsc{S}_x, \ \forall \ \textsc{M} \in \textsc{S}_y \ \Rightarrow \ x \perp y
+		\end{equation} where $\textsc{S}_x$ and $\textsc{S}_y$ are the sets of all states containing the attribute $x$ and $y$ respectively. We also permit the language ``attribute $x$ is perpendicular to states, $\textsc{S}_y$ of attribute $y$", which can be written $x \perp \textsc{S}_y$, which is an equivalent statement as the left-hand side of (1.7).
+	\item[\textbf{Infinite Resources}] An infinite number of instances of any information medium can be prepared from generic substrates. This lets us state:
+		\begin{equation}
+			\mathcal{T}^{\underline{\text{\cmark}}} \ \Rightarrow \ \{\textsc{g} \rightarrow \textbf{\textsc{C}}_\mathcal{T}\}^{\underline{\text{\cmark}}}
+		\end{equation}which is to say that for a task to be possible the corresponding constructor must be preparable from generic substrates. That a constructor for a possible task must be preparable from generic substrates in turn tells us that there exist some set of generic constructors that naturally occur - elsewise we'd have no bootstrapping mechanism to get to more interesting tasks - which means:
+		\begin{equation}
+			\mathcal{T}^{\underline{\text{\cmark}}} \ \Leftrightarrow \ (\exists\textsc{h})(\mathcal{T} \times \{\textsc{g} \rightarrow \textsc{h}\})^{\underline{\text{\cmark}}} \ \text{.}
+		\end{equation}
+	\item[\textbf{Arbitrary Complexity}] A regular network created out of an arbitrary number of possible tasks itself is a possible task.
+\end{itemize}
+
+Variable distinguishability is not logically required by the definition of variables, and likewise state distinguishability is not logically required by the definitions of attributes and states, but these assumptions seem like a useful simplification when dealing with reality where we expect regularity in observable phenomena (in this case distinguishability of observed quantities) to have a unifying explanation. That said, if it turns out these do not hold, we can weaken the assumptions by making them non-universal. Together, the infinite resources and arbitrary complexity principles look very similar to the assumption of an infinite tape in the Turing machine model, this is of course an idealisation and in experience we see that there are strict limitations of resource and complexity possibilities.
+
+\section{Concepts}
 
 Given the constructor-theoretic way of finding classical information as discussed in definitions of the cloning task, we realise from the \textit{locality principle} that the information capacity of disjoint substrates is the sum of each of their capacities - as one would expect. This definition of classical information also has the nice benefit of being completely removed from any physical laws and lacks any logical circularities that arise in existing descriptions of classical information.
 
