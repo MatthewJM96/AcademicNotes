@@ -170,7 +170,7 @@ For a substrate state $\textsc{S} \in \textbf{\textsc{S}}$ with at least two att
 For a substrate state $\textsc{S} \in \textbf{\textsc{S}}$ with at least two attributes $x \in \textsc{S}$, we can write a cloning task that acts on $ \textbf{\textsc{S}} \oplus \textbf{\textsc{S}}$ as:
 \begin{equation}
 	\mathcal{R}(\textsc{S}, x_0) = \underset{x \in \textsc{S}}{\bigcup}\{\,(x, x_0) \rightarrow (x, x)\,\}
-\end{equation}where each $x_0$ is some attribute which can be transformed into the corresponding attribute $x \in \textsc{S}$. The second substrate, whose state is defined by the set of $x_0$, is required to be derived from generic, naturally occurring resources.
+\end{equation}where each $x_0$ is some attribute on the second substrate which can be transformed into the corresponding attribute $x \in \textsc{S}$. The second substrate, whose state must be one in the set $\textsc{S}_{x_0} \subseteq \textbf{\textsc{S}}, \ x_0 \in \textsc{S} \ \forall \ \textsc{S} \in \textsc{S}_{x_0}$, is required to be derivable from generic, naturally occurring resources.
 
 This cloning task is a generalisation of total cloning, which would require $\textsc{S}$ be the set of all attributes in $\textbf{\textsc{S}}$. As with the reversible computation task we can introduce some definitions:
 \begin{itemize}
