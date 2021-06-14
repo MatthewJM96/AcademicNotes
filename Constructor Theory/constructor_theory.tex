@@ -129,10 +129,10 @@ These notes are entirely based upon the work of David Deutsch, Chiara Marletto a
 	\item[\textbf{Substrate}] A system that has state and can cause or react to transformations.
 	\item[\textbf{Generic Substrate}] Substrates that occur naturally that can be prepared, via tasks, as other (potentially composite) substrates.
 	\item[\textbf{Constructor}] A substrate that facilitates a transformation on other substrates with no change to its own state.
-	\item[\textbf{Variable}] A set of disjoint attributes for which a substrate can be in a state with some distribution over these attributes. \textit{Note}: two substrates in combination may have variables (and so attributes) that are not present independently in the two substrates - such as distance between centre of masses.
-	\item[\textbf{Attribute}] A property of a substrate, capable of being modified by some transformation. An attribute can be defined as the set of states of a substrate that hold that attribute.
+	\item[\textbf{Attribute}] A realised value of a property of a substrate (for example, a specific distance between two objects). An attribute is defined as the set of states of a substrate which have that attribute (i.e. that if we measured the substrate with respect to the corresponding property, we would obtain this attribute).
+	\item[\textbf{Variable}] A set of disjoint attributes (i.e. no state in which any pair of attributes are held in common). \textit{Note}: two substrates in combination may have variables (and so attributes) that are not present independently in the two substrates - such as distance between centre of masses.
 	\item[\textbf{Substrate State}] A set of fixings of variables of the substrate in question.
-	\item[\textbf{Sharp Variable}] A variable of which a specific attribute is held in a substrate's state. That is to say, if that variable was measured on that substrate, the specific attribute would be evaluated.
+	\item[\textbf{Sharp Variable}] A variable of which a specific attribute is held in a substrate's state. That is to say, if a substrate were measured with respect to a sharp variable, the attribute that the variable is said to be sharp in would be obtained.
 	\item[\textbf{Task}] A transformation that is described by a set of input attributes that map in an ordered fashion to a same-size set of output attributes. A task acts on any substrate with at least one attribute in its state that is indistinguishable from an attribute in the input attributes of the task, and changes that attribute to the corresponding output attribute.
 	\item[\textbf{Identity Task}] The task that makes no change to the state of a substrate on which it acts.
 \end{itemize}
@@ -142,9 +142,8 @@ These notes are entirely based upon the work of David Deutsch, Chiara Marletto a
 \begin{itemize}
 	\item[\textbf{Substrate}] $\textbf{\textsc{S}}$ is the set of all states the substrate can be in (precise definitions from subsidiary theories). Latin alphabet letters in same font are other substrates, $\textbf{\textsc{E}}$ often being used to denote the environment.
 	\item[\textbf{Constructor}] Constructors being substrates use the same font rules as all other substrates, but we reserve the character  $\textbf{\textsc{C}}$ to denote a substrate that is a constructor. Specifically, given a task denoted $\mathcal{T}$ for which a constructor facilitates realisation, we would write that constructor as $\textbf{\textsc{C}}_\mathcal{T}$.
-	\item[\textbf{Substrate State}] $\textsc{S} \in \textbf{\textsc{S}}$ is a state of a substrate $\textbf{\textsc{S}}$. Latin alphabet letters in same font are other substrate states, except where specified.
 	\item[\textbf{Variable}] $X$ is the set of disjoint attributes that make up the variable (precise definitions from subsidiary theories). Upper-case Latin alphabet letters in the same font are other variables, except where specified.
-	\item[\textbf{Attribute}] $x \in X$ is an attribute in the variable $X$. An attribute can also be a member of a substrate state: $x \in \textsc{S}$. Lower-case Latin alphabet characters in the same font are other attributes, except where specified.
+	\item[\textbf{Attribute}] $x \in X$ is an attribute in the variable $X$, it is defined as the set of all states which would yield the same value represented by this attribute (e.g. all states where two objects are 2m away from one another). Lower-case Latin alphabet characters in the same font are other attributes, except where specified.
 	Another useful way of talking about an attribute is as the set of all states of a substrate $\textbf{\textsc{S}}$ containing that attribute: $$\textsc{S}_x = \set{\, \textsc{S} \ ; \ \forall \ \textsc{S} \in \textbf{\textsc{S}}, \ x \in \textsc{S} \,}$$ We use symbols of the kind $\textsc{S}_x$ to refer to such, using the same font as for substrate states with a subscript of the same font as used to indicate attributes.
 	\item[\textbf{Task}] $\mathcal{T} = \{\,x_{i} \rightarrow y_{i}\,\}, \ \forall \ i \in \{1, 2, 3, \ldots, N\}$ is a task described by a set of mappings from input attributes to output attributes. In the given definition, $N \in \mathbb{Z}^{+}$ is the number of mappings necessary to define the given task. Latin alphabet characters in the same font are other tasks, except where specified.
 	We mark a task as possible by writing $\mathcal{T}^{\underline{\text{\cmark}}}$ and likewise a task as impossible by writing $\mathcal{T}^{\underline{\text{\xmark}}}$.
@@ -183,7 +182,7 @@ This cloning task is a generalisation of total cloning, which would require $\te
 
 It is interesting to note that at this point we have the basis of classical information: given a substrate $\textbf{\textsc{S}}$ with state $\textsc{S} \in \textbf{\textsc{S}}$ has some information variable, $X$ with attributes $x, y \in X$, which is sharp with attribute $x \in S$ and the substrate's state could have been in other configurations where $X$ would have been sharp with attribute $y \in S$, then we have the basic idea of classical information along side the properties of permutations and cloning.
 
-\section{Measurement}
+\section{Definition of Measurement}
 
 The progress made so far through the definitions obtained above allows us now to consider what conditions would allows us to say any set of attributes are distinguishable from one another. In fact the general form of the task needed to be possible for a set of attributes to be distinguishable is relatively simple:
 \begin{equation}
@@ -232,6 +231,8 @@ The following three principles of constructor theory are assumed to hold univers
 	\item[\textbf{Interoperability Principle}] Given two substrates, $\textbf{\textsc{M}}$ and $\textbf{\textsc{N}}$, with information variables $X$ and $Y$ one apiece, the combined substrate $\textbf{\textsc{M}} \oplus \textbf{\textsc{N}}$ has the information variable: $X \times Y = \set*{(x, y); x \in X, y \in Y}$. Thus combined substrates must allow copying information from one to the other (dark matter couldn't, for example, be truly ``dark").
 \end{itemize}
 
+Given the constructor-theoretic way of finding classical information as discussed in definitions of the cloning task, we realise from the \textit{locality principle} that the information capacity of disjoint substrates is the sum of each of their capacities - as one would expect. This definition of classical information also has the nice benefit of being completely removed from any physical laws and lacks any logical circularities that arise in existing descriptions of classical information.
+
 \subsection{Non-Universal Principles}
 
 The following five principles of constructor theory are required to hold for at least some class of substrates, but are assumed to be true universally.
@@ -257,9 +258,9 @@ The following five principles of constructor theory are required to hold for at 
 
 Variable distinguishability is not logically required by the definition of variables, and likewise state distinguishability is not logically required by the definitions of attributes and states, but these assumptions seem like a useful simplification when dealing with reality where we expect regularity in observable phenomena (in this case distinguishability of observed quantities) to have a unifying explanation. That said, if it turns out these do not hold, we can weaken the assumptions by making them non-universal. Together, the infinite resources and arbitrary complexity principles look very similar to the assumption of an infinite tape in the Turing machine model, this is of course an idealisation and in experience we see that there are strict limitations of resource and complexity possibilities.
 
-\section{Concepts}
+\section{Measurement}
 
-Given the constructor-theoretic way of finding classical information as discussed in definitions of the cloning task, we realise from the \textit{locality principle} that the information capacity of disjoint substrates is the sum of each of their capacities - as one would expect. This definition of classical information also has the nice benefit of being completely removed from any physical laws and lacks any logical circularities that arise in existing descriptions of classical information.
+Above we defined the idea of measurement of a variable where it is sharp - that is we ask if one of a set of orthogonal .
 
 \section{Philosophical Discussion}
 
